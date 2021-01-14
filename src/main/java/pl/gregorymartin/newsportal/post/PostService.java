@@ -2,8 +2,11 @@ package pl.gregorymartin.newsportal.post;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.gregorymartin.newsportal.appUser.AppUser;
+import pl.gregorymartin.newsportal.appUser.AppUserService;
 import pl.gregorymartin.newsportal.category.Category;
 import pl.gregorymartin.newsportal.category.CategoryRepository;
+import pl.gregorymartin.newsportal.category.CategoryService;
 import pl.gregorymartin.newsportal.tag.Tag;
 import pl.gregorymartin.newsportal.tag.TagRepository;
 import pl.gregorymartin.newsportal.tag.TagService;
@@ -13,86 +16,82 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+public
 class PostService {
     private final PostRepository postRepository;
-    private final TagRepository tagRepository;
-    private final CategoryRepository categoryRepository;
     private final TagService tagService;
+    private final CategoryService categoryService;
+    private final AppUserService appUserService;
 
-    PostService(final PostRepository postRepository, final TagRepository tagRepository, final CategoryRepository categoryRepository, final TagService tagService) {
+    PostService(final PostRepository postRepository, final TagService tagService, final CategoryService categoryService, final AppUserService appUserService) {
         this.postRepository = postRepository;
-        this.tagRepository = tagRepository;
-        this.categoryRepository = categoryRepository;
         this.tagService = tagService;
+        this.categoryService = categoryService;
+        this.appUserService = appUserService;
     }
 
-    List<Post> showPosts(){
+    List<Post> getPosts(){
         return postRepository.findAll();
     }
 
-    Post addPost(Post source, long categoryId, long userId){
-        Optional<Category> category = categoryRepository.findById(source.getCategory().getId());
-        if(category.isEmpty()){
-            throw new IllegalArgumentException("Category is not exist");
+    public Post getSinglePost(long postId){
+        Optional<Post> post = postRepository.findById(postId);
+        if(post.isEmpty()){
+            throw new IllegalArgumentException("Post is not exist");
         }
-        source.setCategory(category.get());
+        return post.get();
+    }
+
+    Post addPost(Post source, long categoryId, long userId){
+        AppUser appUser = appUserService.getSingleAppUser(userId);
+        source.setAuthor(appUser);
+
+        Category category = categoryService.getSingleCategory(categoryId);
+        source.setCategory(category);
 
         if(!source.getTags().isEmpty()){
-            source.getTags().stream().forEach(tagService::addTag);
+            source.getTags().forEach(tagService::addTag);
         }
         return postRepository.save(source);
     }
 
     @Transactional
     Post editLeadAndContent(Post source){
-        Optional<Post> post = postRepository.findById(source.getId());
-        if(post.isEmpty()){
-            throw new IllegalArgumentException("Post is not exist");
-        }
-        post.get().setLead(source.getLead());
-        post.get().setContent(source.getContent());
-        return post.get();
+        Post post = getSinglePost(source.getId());
+
+        post.setLead(source.getLead());
+        post.setContent(source.getContent());
+        return post;
     }
 
     @Transactional
     Post editCategory(long postId, long categoryId){
-        Optional<Post> post = postRepository.findById(postId);
-        if(post.isEmpty()){
-            throw new IllegalArgumentException("Post is not exist");
-        }
-        Optional<Category> category = categoryRepository.findById(categoryId);
-        if(category.isEmpty()){
-            throw new IllegalArgumentException("Category is not exist");
-        }
-        post.get().setCategory(category.get());
-        return post.get();
+        Post post = getSinglePost(postId);
+
+        Category category = categoryService.getSingleCategory(categoryId);
+        post.setCategory(category);
+
+        return post;
     }
 
     @Transactional
     Post editTags(long postId, Set<Tag> tags){
-        Optional<Post> post = postRepository.findById(postId);
-        if(post.isEmpty()){
-            throw new IllegalArgumentException("Post is not exist");
-        }
-        tags.forEach(tagService::addTag);
-        post.get().setTags(tags);
+        Post post = getSinglePost(postId);
 
-        return post.get();
+        tags.forEach(tagService::addTag);
+        post.setTags(tags);
+
+        return post;
     }
 
     @Transactional
     void togglePublishPost(long postId){
-        Optional<Post> post = postRepository.findById(postId);
-        if(post.isEmpty()){
-            throw new IllegalArgumentException("Post is not exist");
-        }
-        post.get().setPublished(!post.get().isPublished());
+        Post post = getSinglePost(postId);
+        post.setPublished(!post.isPublished());
     }
 
-    void deletePost(long id){
-        if(postRepository.existsById(id)){
-            throw new IllegalArgumentException("Post is not exist");
-        }
-        postRepository.deleteById(id);
+    void deletePost(long postId){
+        Post post = getSinglePost(postId);
+        postRepository.delete(post);
     }
 }

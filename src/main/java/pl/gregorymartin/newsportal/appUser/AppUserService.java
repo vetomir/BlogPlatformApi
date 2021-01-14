@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+public
 class AppUserService {
     private final AppUserRepository appUserRepository;
 
@@ -18,52 +19,61 @@ class AppUserService {
         return appUserRepository.findAll();
     }
 
+    public AppUser getSingleAppUser(long appUserId){
+        Optional<AppUser> appUser = appUserRepository.findById(appUserId);
+        if(appUser.isEmpty()){
+            throw new IllegalArgumentException("User Is not Exist");
+        }
+        return appUser.get();
+    }
+    AppUser getSingleAppUser(String username){
+        Optional<AppUser> appUser = appUserRepository.findByUsername(username);
+        if(appUser.isEmpty()){
+            throw new IllegalArgumentException("Email: " + username + " is already in use");
+        }
+        return appUser.get();
+    }
+
+    AppUser getSingleAppUserByNickname(String nickname){
+        Optional<AppUser> appUser = appUserRepository.findByNickname(nickname);
+        if(appUser.isEmpty()){
+            throw new IllegalArgumentException("Nickname: " + nickname + " is already in use");
+        }
+        return appUser.get();
+    }
+
     AppUser addAppUser(AppUser source){
-        if(appUserRepository.existsByNickname(source.getNickname())){
-            throw new IllegalArgumentException("User with nickname:" + source.getNickname() + " is already exists.");
-        }
-        if(appUserRepository.existsByUsername(source.getUsername())){
-            throw new IllegalArgumentException("Email:" + source.getUsername() + " is already in use.");
-        }
+        getSingleAppUser(source.getUsername());
+        getSingleAppUserByNickname(source.getNickname());
+
         return appUserRepository.save(source);
     }
 
     @Transactional
     AppUser editAppUserProfile(AppUser source){
-        Optional<AppUser> appUser = appUserRepository.findById(source.getId());
-        if(appUser.isEmpty()){
-            throw new IllegalArgumentException("User is not present");
-        }
-        appUser.get().updateProfile(source);
-        return appUser.get();
+        AppUser appUser = getSingleAppUser(source.getId());
+        appUser.updateProfile(source);
+        return appUser;
     }
 
     @Transactional
     AppUser editAppUserCredentials(AppUser source){
-        Optional<AppUser> appUser = appUserRepository.findById(source.getId());
-        if(appUser.isEmpty()){
-            throw new IllegalArgumentException("User is not present");
-        }
-        appUser.get().updateCredentials(source);
-        return appUser.get();
+        AppUser appUser = getSingleAppUser(source.getId());
+        appUser.updateCredentials(source);
+        return appUser;
     }
 
     @Transactional
     AppUser editAppUserPhoto(AppUser source){
-        Optional<AppUser> appUser = appUserRepository.findById(source.getId());
-        if(appUser.isEmpty()){
-            throw new IllegalArgumentException("User is not present");
-        }
-        appUser.get().setPhotoUrl(source.getPhotoUrl());
-        return appUser.get();
+        AppUser appUser = getSingleAppUser(source.getId());
+        appUser.setPhotoUrl(source.getPhotoUrl());
+        return appUser;
 
     }
 
     boolean deleteAppUser(long id){
-        if(!appUserRepository.existsById(id)){
-            throw new IllegalArgumentException("User is not present");
-        }
-        appUserRepository.deleteById(id);
+        AppUser appUser = getSingleAppUser(id);
+        appUserRepository.delete(appUser);
         return true;
     }
 }

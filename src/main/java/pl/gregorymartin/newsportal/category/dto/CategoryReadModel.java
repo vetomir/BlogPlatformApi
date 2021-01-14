@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
+public
 class CategoryReadModel {
     private long id;
     private String name;

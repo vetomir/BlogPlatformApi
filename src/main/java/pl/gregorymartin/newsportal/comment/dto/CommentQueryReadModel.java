@@ -3,7 +3,6 @@ package pl.gregorymartin.newsportal.comment.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import pl.gregorymartin.newsportal.appUser.dto.AppUserQueryReadModel;
 import pl.gregorymartin.newsportal.appUser.dto.AppUserReadModel;
 import pl.gregorymartin.newsportal.post.dto.PostQueryReadModel;
 
@@ -11,11 +10,8 @@ import pl.gregorymartin.newsportal.post.dto.PostQueryReadModel;
 @Getter
 @Setter
 public
-class CommentReadModel {
+class CommentQueryReadModel {
     private long id;
-    private AppUserQueryReadModel author;
+    private String authorName;
     private String content;
-    private CommentQueryReadModel parentComment;
-
-    private PostQueryReadModel commentedPost;
 }

@@ -3,7 +3,6 @@ package pl.gregorymartin.newsportal.tag.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import pl.gregorymartin.newsportal.post.dto.PostQueryReadModel;
 import pl.gregorymartin.newsportal.post.dto.PostReadModel;
 
 import java.util.List;
@@ -12,8 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 public
-class TagReadModel {
+class TagQueryReadModel {
     private long id;
     private String name;
-    private List<PostQueryReadModel> posts;
 }

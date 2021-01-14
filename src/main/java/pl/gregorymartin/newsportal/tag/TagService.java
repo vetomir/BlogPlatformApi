@@ -14,30 +14,45 @@ public class TagService {
         this.tagRepository = tagRepository;
     }
 
-    List<Tag> showAllTags(){
+    List<Tag> getAllTags(){
         return tagRepository.findAll();
     }
 
+    Tag getSingleTag(long tagId){
+        Optional<Tag> tag = tagRepository.findById(tagId);
+        if(tag.isEmpty()){
+            throw new IllegalArgumentException("Tag is not exists");
+        }
+        return tag.get();
+    }
+
+    Tag getSingleTag(String tagName){
+        Optional<Tag> tag = tagRepository.findByName(tagName);
+        if(tag.isEmpty()){
+            throw new IllegalArgumentException("Tag " + tagName + " is not exists");
+        }
+        return tag.get();
+    }
+
     public Tag addTag(Tag source){
-        Optional<Tag> tag = tagRepository.findById(source.getId());
-        return tag.orElseGet(() -> tagRepository.save(source));
+        Optional<Tag> tag = tagRepository.findByName(source.getName());
+        if (tag.isEmpty()) {
+            return tagRepository.save(source);
+        }
+        return tag.get();
+
     }
 
     @Transactional
     Tag editTagName(Tag source){
-        Optional<Tag> tag = tagRepository.findById(source.getId());
-        if(tag.isEmpty()){
-            throw new IllegalArgumentException("Tag is not exist");
-        }
-        tag.get().setName(source.getName());
-        return tag.get();
+        Tag tag = getSingleTag(source.getId());
+        tag.setName(source.getName());
+        return tag;
     }
 
     boolean deleteTag(long id){
-        if(!tagRepository.existsById(id)){
-            throw new IllegalArgumentException("Tag is not exists");
-        }
-        tagRepository.deleteById(id);
+        Tag tag = getSingleTag(id);
+        tagRepository.delete(tag);
         return true;
     }
 }

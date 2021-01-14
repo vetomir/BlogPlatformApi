@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+public
 class CategoryService {
     private final CategoryRepository categoryRepository;
 
@@ -14,8 +15,16 @@ class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    List<Category> showAllCategories(){
+    List<Category> getAllCategories(){
         return categoryRepository.findAll();
+    }
+
+    public Category getSingleCategory(long categoryId){
+        Optional<Category> category = categoryRepository.findById(categoryId);
+        if(category.isEmpty()){
+            throw new IllegalArgumentException("Category is not exist");
+        }
+        return category.get();
     }
 
     Category addCategory(Category source){
@@ -24,22 +33,16 @@ class CategoryService {
 
     @Transactional
     Category editCategory(Category source){
-        Optional<Category> category = categoryRepository.findById(source.getId());
-        if(category.isEmpty()){
-            throw new IllegalArgumentException("Category is not exist");
-        }
-        category.get().setName(source.getName());
-        category.get().setParentCategoryId(source.getParentCategoryId());
-        return category.get();
+        Category category = getSingleCategory(source.getId());
+
+        category.setName(source.getName());
+        category.setParentCategoryId(source.getParentCategoryId());
+        return category;
     }
 
     boolean deleteCategory(long id){
-        if(!categoryRepository.existsById(id)){
-            throw new IllegalArgumentException("Category is not exist");
-        }
-        categoryRepository.deleteById(id);
+        Category category = getSingleCategory(id);
+        categoryRepository.delete(category);
         return true;
     }
-
-
 }

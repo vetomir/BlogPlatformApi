@@ -3,8 +3,8 @@ package pl.gregorymartin.newsportal.post.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import pl.gregorymartin.newsportal.appUser.dto.AppUserQueryReadModel;
 import pl.gregorymartin.newsportal.appUser.dto.AppUserReadModel;
+import pl.gregorymartin.newsportal.category.dto.CategoryQueryReadModel;
 import pl.gregorymartin.newsportal.comment.dto.CommentReadModel;
 import pl.gregorymartin.newsportal.tag.dto.TagReadModel;
 
@@ -14,18 +14,12 @@ import java.util.List;
 @Getter
 @Setter
 public
-class PostQueryReadModel {
-    private long id;
+class PostWriteModel {
     private String title;
     private String lead;
     private String content;
 
     private String photoUrl;
     private String photoSource;
-
-    private String author;
-
-    private String categoryName;
-
     private List<String> tags;
 }

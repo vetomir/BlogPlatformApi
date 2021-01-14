@@ -24,7 +24,7 @@ class Tag {
     public Tag() {
     }
 
-    Tag(final String name) {
+    public Tag(final String name) {
         this.name = name;
     }
 }
