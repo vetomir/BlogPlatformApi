@@ -1,13 +1,8 @@
 package pl.gregorymartin.newsportal.comment;
 
-import pl.gregorymartin.newsportal.appUser.AppUser;
 import pl.gregorymartin.newsportal.appUser.AppUserQueryFactory;
-import pl.gregorymartin.newsportal.appUser.dto.AppUserReadModel;
-import pl.gregorymartin.newsportal.appUser.dto.AppUserWriteModel;
-import pl.gregorymartin.newsportal.comment.dto.CommentQueryReadModel;
 import pl.gregorymartin.newsportal.comment.dto.CommentReadModel;
 import pl.gregorymartin.newsportal.comment.dto.CommentWriteModel;
-import pl.gregorymartin.newsportal.post.Post;
 import pl.gregorymartin.newsportal.post.PostQueryFactory;
 
 import java.util.ArrayList;
@@ -25,6 +20,7 @@ class CommentFactory {
     public static Comment toEntity(CommentWriteModel commentWriteModel) {
         Comment comment = new Comment();
         comment.setContent(commentWriteModel.getContent());
+        comment.setParentCommentId(commentWriteModel.getParentId());
         return comment;
     }
     /*AppUser Read*/
@@ -42,7 +38,8 @@ class CommentFactory {
                 .id(comments.getId())
                 .commentedPost(PostQueryFactory.toDto(comments.getPost()))
                 .content(comments.getContent())
-                .author(AppUserQueryFactory.toDto(comments.getAuthor()))
+                .author(AppUserQueryFactory.toDto(comments.getAppUser()))
+                .createdOn(comments.formatCreatedOn())
                 .build();
     }
 }

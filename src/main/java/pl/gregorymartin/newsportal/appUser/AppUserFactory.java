@@ -21,7 +21,7 @@ class AppUserFactory {
 
     public static AppUser toEntity(AppUserWriteModel appUserWriteModel) {
         AppUser appUser = new AppUser();
-        appUser.setUsername(appUser.getUsername());
+        appUser.setUsername(appUserWriteModel.getUsername());
         appUser.setPassword(appUserWriteModel.getPassword());
         appUser.setNickname(appUserWriteModel.getNickname());
         appUser.setName(appUserWriteModel.getName());
@@ -44,8 +44,8 @@ class AppUserFactory {
                 .nickname(appUser.getNickname())
                 .name(appUser.getName())
                 .surname(appUser.getSurname())
-                .comments(CommentQueryFactory.toDto((List<Comment>) appUser.getComments()))
-                .posts(PostQueryFactory.toDto((List<Post>) appUser.getPosts()))
+                .comments(CommentQueryFactory.toDto(new ArrayList<>(appUser.getComments())))
+                .posts(PostQueryFactory.toDto(new ArrayList<>(appUser.getPosts())))
                 .build();
     }
 }

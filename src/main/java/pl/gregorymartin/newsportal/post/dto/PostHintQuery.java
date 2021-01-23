@@ -13,6 +13,7 @@ class PostHintQuery {
     private String title;
     private String lead;
     private String photoUrl;
+    private String createdOn;
     private AppUserReadModel author;
     private String categoryName;
 }

@@ -1,23 +1,26 @@
 package pl.gregorymartin.newsportal.post;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.gregorymartin.newsportal.appUser.AppUser;
 import pl.gregorymartin.newsportal.appUser.AppUserService;
 import pl.gregorymartin.newsportal.category.Category;
-import pl.gregorymartin.newsportal.category.CategoryRepository;
 import pl.gregorymartin.newsportal.category.CategoryService;
 import pl.gregorymartin.newsportal.tag.Tag;
-import pl.gregorymartin.newsportal.tag.TagRepository;
 import pl.gregorymartin.newsportal.tag.TagService;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public
 class PostService {
+    private static final int PAGE_SIZE = 28;
+
     private final PostRepository postRepository;
     private final TagService tagService;
     private final CategoryService categoryService;
@@ -34,24 +37,32 @@ class PostService {
         return postRepository.findAll();
     }
 
+    public List<Post> getPosts(int page, Sort.Direction sort, String sortBy) {
+
+        return postRepository.findAll(
+                PageRequest.of(page, PAGE_SIZE,
+                        Sort.by(sort, sortBy)
+                )
+        ).getContent();
+    }
+
     public Post getSinglePost(long postId){
         Optional<Post> post = postRepository.findById(postId);
         if(post.isEmpty()){
-            throw new IllegalArgumentException("Post is not exist");
+            throw new IllegalArgumentException("Post (ID:" + postId + ") is not exist");
         }
         return post.get();
     }
 
     Post addPost(Post source, long categoryId, long userId){
         AppUser appUser = appUserService.getSingleAppUser(userId);
-        source.setAuthor(appUser);
+        source.setAppUser(appUser);
 
         Category category = categoryService.getSingleCategory(categoryId);
         source.setCategory(category);
 
-        if(!source.getTags().isEmpty()){
-            source.getTags().forEach(tagService::addTag);
-        }
+        source.setTags(tagService.saveTags(source.getTags()));
+
         return postRepository.save(source);
     }
 
@@ -85,9 +96,11 @@ class PostService {
     }
 
     @Transactional
-    void togglePublishPost(long postId){
+    Post togglePublishPost(long postId){
         Post post = getSinglePost(postId);
         post.setPublished(!post.isPublished());
+
+        return post;
     }
 
     void deletePost(long postId){

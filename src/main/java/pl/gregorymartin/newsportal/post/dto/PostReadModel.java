@@ -3,10 +3,10 @@ package pl.gregorymartin.newsportal.post.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import pl.gregorymartin.newsportal.appUser.dto.AppUserReadModel;
+import pl.gregorymartin.newsportal.appUser.dto.AppUserQueryReadModel;
 import pl.gregorymartin.newsportal.category.dto.CategoryQueryReadModel;
 import pl.gregorymartin.newsportal.comment.dto.CommentReadModel;
-import pl.gregorymartin.newsportal.tag.dto.TagReadModel;
+import pl.gregorymartin.newsportal.tag.dto.TagQueryReadModel;
 
 import java.util.List;
 
@@ -23,11 +23,14 @@ class PostReadModel {
     private String photoUrl;
     private String photoSource;
 
-    private AppUserReadModel author;
+    private boolean published;
+    private String createdOn;
+
+    private AppUserQueryReadModel author;
 
     private CategoryQueryReadModel category;
 
-    private List<TagReadModel> tags;
+    private List<TagQueryReadModel> tags;
 
     private List<CommentReadModel> comments;
 }

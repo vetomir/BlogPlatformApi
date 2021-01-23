@@ -11,6 +11,7 @@ import pl.gregorymartin.newsportal.post.Post;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -27,6 +28,7 @@ public class AppUser implements UserDetails {
     @NotBlank(message = "password cannot be blank")
     private String password;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @NotBlank(message = "name cannot be blank")
@@ -38,11 +40,13 @@ public class AppUser implements UserDetails {
     private String photoUrl;
 
 
-    @OneToMany
-    private Set<Comment> comments;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "app_user_id",  insertable = false)
+    private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany
-    private Set<Post> posts;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "app_user_id",  insertable = false)
+    private Set<Post> posts = new HashSet<>();
 
     public AppUser() {}
 

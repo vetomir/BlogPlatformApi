@@ -9,7 +9,6 @@ import pl.gregorymartin.newsportal.utils.Audit;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -21,12 +20,14 @@ public class Comment extends Audit {
     private long id;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", updatable = false)
     private Post post;
 
     @NotNull
-    @ManyToOne
-    private AppUser author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "app_user_id", updatable = false)
+    private AppUser appUser;
 
     @NotBlank(message = "Content cannot be blank")
     private String content;
@@ -34,5 +35,10 @@ public class Comment extends Audit {
     private long parentCommentId;
 
     public Comment() {
+    }
+
+    Comment(@NotBlank(message = "Content cannot be blank") final String content, final long parentCommentId) {
+        this.content = content;
+        this.parentCommentId = parentCommentId;
     }
 }

@@ -1,21 +1,23 @@
 package pl.gregorymartin.newsportal.appUser.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import pl.gregorymartin.newsportal.comment.dto.CommentReadModel;
-import pl.gregorymartin.newsportal.post.dto.PostQueryReadModel;
 
-import java.util.List;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 public
 class AppUserWriteModel {
+    @NotBlank(message = "username cannot be blank")
     private String username;
+    @NotBlank(message = "name cannot be blank")
     private String nickname;
+    @NotBlank(message = "password cannot be blank")
+    private String password;
+    @NotBlank(message = "password cannot be blank")
+    private String password2;
+
     private String name;
     private String surname;
-    private String password;
-    private String password2;
 }

@@ -1,5 +1,8 @@
 package pl.gregorymartin.newsportal.appUser;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,27 +12,40 @@ import java.util.Optional;
 @Service
 public
 class AppUserService {
-    private final AppUserRepository appUserRepository;
+    private static final int PAGE_SIZE = 28;
 
-    AppUserService(final AppUserRepository appUserRepository) {
+    private final AppUserRepository appUserRepository;
+    private PasswordEncoder passwordEncoder;
+
+    AppUserService(final AppUserRepository appUserRepository, final PasswordEncoder passwordEncoder) {
         this.appUserRepository = appUserRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     List<AppUser> getAllUsers(){
         return appUserRepository.findAll();
     }
 
+    public List<AppUser> getUsers(int page, Sort.Direction sort, String sortBy) {
+
+        return appUserRepository.findAll(
+                PageRequest.of(page, PAGE_SIZE,
+                        Sort.by(sort, sortBy)
+                )
+        ).getContent();
+    }
+
     public AppUser getSingleAppUser(long appUserId){
         Optional<AppUser> appUser = appUserRepository.findById(appUserId);
         if(appUser.isEmpty()){
-            throw new IllegalArgumentException("User Is not Exist");
+            throw new IllegalArgumentException("User (ID:" + appUserId + ") is not Exist");
         }
         return appUser.get();
     }
     AppUser getSingleAppUser(String username){
         Optional<AppUser> appUser = appUserRepository.findByUsername(username);
         if(appUser.isEmpty()){
-            throw new IllegalArgumentException("Email: " + username + " is already in use");
+            throw new IllegalArgumentException("Email: " + username + " is not Exist");
         }
         return appUser.get();
     }
@@ -37,14 +53,20 @@ class AppUserService {
     AppUser getSingleAppUserByNickname(String nickname){
         Optional<AppUser> appUser = appUserRepository.findByNickname(nickname);
         if(appUser.isEmpty()){
-            throw new IllegalArgumentException("Nickname: " + nickname + " is already in use");
+            throw new IllegalArgumentException("Nickname: " + nickname + " is not Exist");
         }
         return appUser.get();
     }
 
     AppUser addAppUser(AppUser source){
-        getSingleAppUser(source.getUsername());
-        getSingleAppUserByNickname(source.getNickname());
+        if(appUserRepository.existsByUsername(source.getUsername())){
+            throw new IllegalArgumentException("Username: " + source.getUsername() + " is already in use");
+        }
+        if(appUserRepository.existsByNickname(source.getNickname())){
+            throw new IllegalArgumentException("Nickname: " + source.getNickname() + " is already in use");
+        }
+
+        source.setPassword(passwordEncoder.encode(source.getPassword()));
 
         return appUserRepository.save(source);
     }

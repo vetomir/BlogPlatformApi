@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import pl.gregorymartin.newsportal.post.dto.PostQueryReadModel;
-import pl.gregorymartin.newsportal.post.dto.PostReadModel;
 
 import java.util.List;
 

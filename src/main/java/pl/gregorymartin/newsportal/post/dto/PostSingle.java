@@ -23,7 +23,9 @@ class PostSingle {
     private String photoUrl;
     private String photoSource;
 
+    private String createdOn;
     private AppUserReadModel author;
+
 
     private CategoryQueryReadModel category;
 

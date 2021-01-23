@@ -6,8 +6,9 @@ import pl.gregorymartin.newsportal.post.Post;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,8 +24,9 @@ public class Category {
 
     private long parentCategoryId;
 
-    @OneToMany
-    private List<Post> posts;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id",  insertable = false)
+    private Set<Post> posts = new HashSet<>();
 
     public Category() {
     }

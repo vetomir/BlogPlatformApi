@@ -1,13 +1,19 @@
 package pl.gregorymartin.newsportal.tag;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class TagService {
+    private static final int PAGE_SIZE = 28;
+
     private final TagRepository tagRepository;
 
     TagService(final TagRepository tagRepository) {
@@ -18,10 +24,19 @@ public class TagService {
         return tagRepository.findAll();
     }
 
+    public List<Tag> getTags(int page, Sort.Direction sort, String sortBy) {
+
+        return tagRepository.findAll(
+                PageRequest.of(page, PAGE_SIZE,
+                        Sort.by(sort, sortBy)
+                )
+        ).getContent();
+    }
+
     Tag getSingleTag(long tagId){
         Optional<Tag> tag = tagRepository.findById(tagId);
         if(tag.isEmpty()){
-            throw new IllegalArgumentException("Tag is not exists");
+            throw new IllegalArgumentException("Tag (ID:" + tagId + ") is not exists");
         }
         return tag.get();
     }
@@ -35,12 +50,25 @@ public class TagService {
     }
 
     public Tag addTag(Tag source){
-        Optional<Tag> tag = tagRepository.findByName(source.getName());
+        Optional<Tag> tag = tagRepository.getByName(source.getName());
         if (tag.isEmpty()) {
             return tagRepository.save(source);
         }
         return tag.get();
+    }
 
+    public Set<Tag> saveTags(Set<Tag> tags){
+        Set<Tag> tagSet = tags.stream().map(x -> {
+            Optional<Tag> tag = tagRepository.getByName(x.getName());
+
+            if (tag.isEmpty()) {
+                return tagRepository.save(x);
+            } else {
+                return tag.get();
+            }
+        }).collect(Collectors.toSet());
+
+        return tagSet;
     }
 
     @Transactional
