@@ -50,13 +50,13 @@ class CategoryRestController {
     }
 
     @PatchMapping
-    public ResponseEntity<CategoryReadModel> update(@RequestBody CategoryWriteModel category/*, @RequestParam(name = "user-id") long userId*/) {
+    public ResponseEntity<CategoryReadModel> update(@RequestBody CategoryWriteModel category/*, @RequestParam(name = "user-id") long userId*/) throws IllegalAccessException {
         Category result = service.editCategory(CategoryFactory.toEntity(category));
         return ResponseEntity.created(URI.create("/" + result.getId())).body(CategoryFactory.toDto(result));
     }
 
     @DeleteMapping
-    public ResponseEntity delete(@RequestParam long id) {
+    public ResponseEntity delete(@RequestParam long id) throws IllegalAccessException {
         service.deleteCategory(id);
         return ResponseEntity.noContent().build();
     }

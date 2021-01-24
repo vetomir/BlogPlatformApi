@@ -14,11 +14,21 @@ class Warmup implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override
     public void onApplicationEvent(final ContextRefreshedEvent contextRefreshedEvent) {
-
-        //loadData();
+        if(service.getCategories().size() == 0){
+            loadData();
+        }
 
     }
     void loadData(){
-        service.addCategory(new Category("Category", 0));
+        //Fixed and Irremovable Category
+        Category Uncategorized = new Category("Uncategorized", 0);
+        Uncategorized.setFixed(true);
+        service.addCategory(Uncategorized);
+
+
+        service.addCategory(new Category("Category 1", 0));
+        service.addCategory(new Category("Category 2", 0));
+        service.addCategory(new Category("Category 3", 0));
     }
+
 }

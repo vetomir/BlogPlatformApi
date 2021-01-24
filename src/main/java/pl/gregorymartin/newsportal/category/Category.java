@@ -22,6 +22,8 @@ public class Category {
     @NotBlank(message = "Category Name cannot be blank")
     private String name;
 
+    private boolean fixed = false;
+
     private long parentCategoryId;
 
     @OneToMany(fetch = FetchType.EAGER)

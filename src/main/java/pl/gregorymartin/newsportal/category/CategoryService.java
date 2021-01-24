@@ -21,7 +21,7 @@ class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    List<Category> getAllCategories(){
+    List<Category> getCategories(){
         return categoryRepository.findAll();
     }
 
@@ -51,16 +51,21 @@ class CategoryService {
     }
 
     @Transactional
-    Category editCategory(Category source){
+    Category editCategory(Category source) throws IllegalAccessException {
         Category category = getSingleCategory(source.getId());
-
+        if(category.isFixed()){
+            throw new IllegalAccessException("Category '" + category.getName() + "' (ID: " + category.getId() + ") is fixed, cannot be edited");
+        }
         category.setName(source.getName());
         category.setParentCategoryId(source.getParentCategoryId());
-        return category;
+        return categoryRepository.save(category);
     }
 
-    boolean deleteCategory(long id){
+    boolean deleteCategory(long id) throws IllegalAccessException {
         Category category = getSingleCategory(id);
+        if(category.isFixed()){
+            throw new IllegalAccessException("Category '" + category.getName() + "' (ID: " + category.getId() + ") is fixed, cannot be removed");
+        }
         categoryRepository.delete(category);
         return true;
     }

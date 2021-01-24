@@ -3,8 +3,6 @@ package pl.gregorymartin.newsportal.appUser;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
-import pl.gregorymartin.newsportal.category.Category;
-import pl.gregorymartin.newsportal.category.CategoryService;
 
 @Component("appUserWarmup")
 class Warmup implements ApplicationListener<ContextRefreshedEvent> {
@@ -17,7 +15,9 @@ class Warmup implements ApplicationListener<ContextRefreshedEvent> {
     @Override
     public void onApplicationEvent(final ContextRefreshedEvent contextRefreshedEvent) {
 
-        //loadData();
+        if(service.getUsers().size() == 0){
+            loadData();
+        }
 
     }
     void loadData(){

@@ -2,7 +2,6 @@ package pl.gregorymartin.newsportal.category;
 
 import pl.gregorymartin.newsportal.category.dto.CategoryReadModel;
 import pl.gregorymartin.newsportal.category.dto.CategoryWriteModel;
-import pl.gregorymartin.newsportal.post.Post;
 import pl.gregorymartin.newsportal.post.PostQueryFactory;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ class CategoryFactory {
     public static Category toEntity(CategoryWriteModel categoryWriteModel) {
         Category category = new Category();
         category.setId(categoryWriteModel.getId());
-        category.setParentCategoryId(categoryWriteModel.getCategoryParentId());
+        category.setParentCategoryId(categoryWriteModel.getParent());
         category.setName(categoryWriteModel.getName());
 
         return category;

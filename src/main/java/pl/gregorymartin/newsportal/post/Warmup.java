@@ -1,6 +1,7 @@
 package pl.gregorymartin.newsportal.post;
 
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,7 @@ import pl.gregorymartin.newsportal.tag.Tag;
 import java.util.Set;
 
 @Component("postWarmup")
-@Lazy
+@DependsOn({"categoryWarmup", "appUserWarmup"})
 class Warmup implements ApplicationListener<ContextRefreshedEvent> {
     private final PostService service;
     private String loremLead = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dignissim vehicula elementum. Ut ante erat, sagittis vitae ex eu, interdum consectetur mauris. Etiam accumsan est at neque laoreet, quis tincidunt mi sollicitudin. Cras dapibus est nibh.";
@@ -22,20 +23,21 @@ class Warmup implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override
     public void onApplicationEvent(final ContextRefreshedEvent contextRefreshedEvent) {
-
-        //loadData();
+        if(service.getPosts().size() == 0){
+            loadData();
+        }
 
     }
     void loadData(){
         samplePost("Post 1", 1, 1);
-        samplePost("Post 2", 1, 1);
-        samplePost("Post 3", 1, 1);
+        samplePost("Post 2", 2, 1);
+        samplePost("Post 3", 3, 1);
         samplePost("Post 4", 1, 2);
-        samplePost("Post 5", 1, 2);
+        samplePost("Post 5", 4, 2);
         samplePost("Post 6", 1, 2);
-        samplePost("Post 7", 1, 3);
-        samplePost("Post 8", 1, 3);
-        samplePost("Post 9", 1, 3);
+        samplePost("Post 7", 2, 3);
+        samplePost("Post 8", 2, 3);
+        samplePost("Post 9", 2, 3);
 
     }
 

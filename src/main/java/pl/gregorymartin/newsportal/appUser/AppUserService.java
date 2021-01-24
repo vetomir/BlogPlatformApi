@@ -22,7 +22,7 @@ class AppUserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    List<AppUser> getAllUsers(){
+    List<AppUser> getUsers(){
         return appUserRepository.findAll();
     }
 

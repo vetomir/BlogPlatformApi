@@ -63,10 +63,15 @@ public class RestExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorDetails> handleOtherExceptions(Exception e, HttpServletRequest request) {
         System.out.println(e.getClass().getName());
+        try{
+            ErrorDetails errorDetails = new ErrorDetails(new Date(), List.of(e.getMessage()), request.getRequestURI());
 
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), List.of(e.getMessage()), request.getRequestURI());
+            return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+        }catch (Exception f){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+
     }
 
     @ResponseBody

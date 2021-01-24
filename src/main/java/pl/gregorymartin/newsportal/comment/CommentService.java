@@ -26,7 +26,7 @@ public class CommentService {
         this.appUserService = appUserService;
     }
 
-    List<Comment> getAllComments(){
+    List<Comment> getComments(){
         return commentRepository.findAll();
     }
 

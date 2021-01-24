@@ -11,5 +11,5 @@ public class CategoryWriteModel {
     private long id;
     @NotBlank(message = "category name cannot be blank")
     private String name;
-    private long categoryParentId;
+    private long parent;
 }
