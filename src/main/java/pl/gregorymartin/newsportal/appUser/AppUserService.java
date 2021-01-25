@@ -75,26 +75,43 @@ class AppUserService {
     AppUser editAppUserProfile(AppUser source){
         AppUser appUser = getSingleAppUser(source.getId());
         appUser.updateProfile(source);
-        return appUser;
+        return appUserRepository.save(appUser);
     }
 
     @Transactional
     AppUser editAppUserCredentials(AppUser source){
         AppUser appUser = getSingleAppUser(source.getId());
+        source.setPassword(passwordEncoder.encode(source.getPassword()));
         appUser.updateCredentials(source);
-        return appUser;
+        return appUserRepository.save(appUser);
     }
 
     @Transactional
     AppUser editAppUserPhoto(AppUser source){
         AppUser appUser = getSingleAppUser(source.getId());
-        appUser.setPhotoUrl(source.getPhotoUrl());
-        return appUser;
+        appUser.updatePhoto(source);
+        return appUserRepository.save(appUser);
 
     }
 
-    boolean deleteAppUser(long id){
-        AppUser appUser = getSingleAppUser(id);
+    @Transactional
+    AppUser toggleAdmin(long userId){
+        AppUser appUser = getSingleAppUser(userId);
+        appUser.toggleRole();
+        return appUserRepository.save(appUser);
+
+    }
+
+    @Transactional
+    AppUser toggleBlock(long userId) throws IllegalAccessException {
+        AppUser appUser = getSingleAppUser(userId);
+        appUser.toggleBlock();
+        return appUserRepository.save(appUser);
+
+    }
+
+    boolean deleteAppUser(long userId){
+        AppUser appUser = getSingleAppUser(userId);
         appUserRepository.delete(appUser);
         return true;
     }

@@ -2,22 +2,12 @@ package pl.gregorymartin.newsportal.appUser;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import pl.gregorymartin.newsportal.appUser.dto.AppUserReadModel;
-import pl.gregorymartin.newsportal.appUser.dto.AppUserWriteModel;
-import pl.gregorymartin.newsportal.post.Post;
-import pl.gregorymartin.newsportal.post.PostFactory;
-import pl.gregorymartin.newsportal.post.PostService;
-import pl.gregorymartin.newsportal.post.dto.PostReadModel;
-import pl.gregorymartin.newsportal.post.dto.PostWriteModel;
-import pl.gregorymartin.newsportal.tag.Tag;
-import pl.gregorymartin.newsportal.tag.TagFactory;
-import pl.gregorymartin.newsportal.tag.dto.TagWriteModel;
+import pl.gregorymartin.newsportal.appUser.dto.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
@@ -43,48 +33,66 @@ class AppUserRestController {
     }
 
     @GetMapping
-    public ResponseEntity<AppUserReadModel> readSingle(@RequestParam int id) {
-        AppUser appUser = service.getSingleAppUser(id);
+    public ResponseEntity<AppUserReadModel> readSingle(@RequestParam(name = "id") int userId) {
+        AppUser appUser = service.getSingleAppUser(userId);
+        return ResponseEntity.ok(AppUserFactory.toDto(appUser));
+    }
+
+    @GetMapping("/{nickname}")
+    public ResponseEntity<AppUserReadModel> readSingle(@PathVariable(name = "nickname") String userNickname) {
+        AppUser appUser = service.getSingleAppUserByNickname(userNickname);
         return ResponseEntity.ok(AppUserFactory.toDto(appUser));
     }
 
     @PostMapping
-    public ResponseEntity<AppUserReadModel> create(@RequestBody AppUserWriteModel appUser/*, @RequestParam(name = "user-id") long userId*/) {
-        if(!appUser.getPassword().equals(appUser.getPassword2())){
+    public ResponseEntity<AppUserReadModel> create(@RequestBody @Valid AppUserWriteModel source/*, @RequestParam(name = "user-id") long userId*/) {
+        if(!source.getPassword().equals(source.getPasswordRepeat())){
             throw new IllegalArgumentException("passwords are not the same");
         }
-        AppUser result = service.addAppUser(AppUserFactory.toEntity(appUser));
+        AppUser result = service.addAppUser(AppUserFactory.toEntity(source));
         return ResponseEntity.created(URI.create("/" + result.getId())).body(AppUserFactory.toDto(result));
     }
 
-    @PatchMapping("/profile")
-    public ResponseEntity<AppUserReadModel> updateProfile(@RequestBody AppUserWriteModel source, @RequestParam(name = "id") long userId/*, @RequestParam(name = "user-id") long userId*/) {
-        AppUser appUser = AppUserFactory.toEntity(source);
-        appUser.setId(userId);
-        AppUser result = service.editAppUserProfile(appUser);
-        return ResponseEntity.created(URI.create("/" + result.getId())).body(AppUserFactory.toDto(result));
-    }
-
-    @PatchMapping("/credentials")
-    public ResponseEntity<AppUserReadModel> updateCredentials(@RequestBody AppUserWriteModel source, @RequestParam(name = "id") long userId/*, @RequestParam(name = "user-id") long userId*/) {
-        AppUser appUser = AppUserFactory.toEntity(source);
+    @PatchMapping("/{id}/credentials")
+    public ResponseEntity<AppUserReadModel> updateCredentials(@PathVariable(name = "id") int userId, @RequestBody @Valid AppUserEditCredentials source) {
+        if(!source.getPassword().equals(source.getPasswordRepeat())){
+            throw new IllegalArgumentException("passwords are not the same");
+        }
+        AppUser appUser = AppUserEditCredentialsFactory.toEntity(source);
         appUser.setId(userId);
         AppUser result = service.editAppUserCredentials(appUser);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(AppUserFactory.toDto(result));
     }
 
+    @PatchMapping("/{id}/profile")
+    public ResponseEntity<AppUserReadModel> updateProfile(@PathVariable(name = "id") int userId, @RequestBody @Valid AppUserEditProfile source) {
+        AppUser appUser = AppUserEditProfileFactory.toEntity(source);
+        appUser.setId(userId);
+        AppUser result = service.editAppUserProfile(appUser);
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(AppUserFactory.toDto(result));
+    }
 
-    @PatchMapping("/photo")
-    public ResponseEntity<AppUserReadModel> updatePhoto(@RequestBody AppUserWriteModel source, @RequestParam(name = "id") long userId/*, @RequestParam(name = "user-id") long userId*/) {
-        AppUser appUser = AppUserFactory.toEntity(source);
+    @PatchMapping("/{id}/photo")
+    public ResponseEntity<AppUserReadModel> updatePhoto(@PathVariable(name = "id") int userId, @RequestBody AppUserEditPhoto source) {
+        AppUser appUser = AppUserEditPhotoFactory.toEntity(source);
         appUser.setId(userId);
         AppUser result = service.editAppUserPhoto(appUser);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(AppUserFactory.toDto(result));
     }
-
-    @DeleteMapping
-    public ResponseEntity delete(@RequestParam long id) {
-        service.deleteAppUser(id);
-        return ResponseEntity.noContent().build();
+    @PatchMapping("/{id}/admin")
+    public ResponseEntity<AppUserReadModel> updateRole(@PathVariable(name = "id") int userId) {
+        AppUser result = service.toggleAdmin(userId);
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(AppUserFactory.toDto(result));
     }
+    @PatchMapping("/{id}/block")
+    public ResponseEntity<AppUserReadModel> updateBlock(@PathVariable(name = "id") int userId) throws IllegalAccessException {
+        AppUser result = service.toggleBlock(userId);
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(AppUserFactory.toDto(result));
+    }
+
+/*    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable(name = "id") int userId) {
+        service.deleteAppUser(userId);
+        return ResponseEntity.noContent().build();
+    }*/
 }

@@ -14,15 +14,15 @@ import java.util.stream.Collectors;
 public class TagFactory {
 
     /*Tag Write*/
-    public static List<Tag> toEntity(List<TagWriteModel> postWriteModel) {
-        return postWriteModel.stream()
+    public static List<Tag> toEntity(List<TagWriteModel> tagWriteModel) {
+        return tagWriteModel.stream()
                 .map(TagFactory::toEntity)
                 .collect(Collectors.toList());
     }
 
-    public static Tag toEntity(TagWriteModel postWriteModel) {
+    public static Tag toEntity(TagWriteModel tagWriteModel) {
         Tag tag = new Tag();
-        tag.setName(postWriteModel.getName());
+        tag.setName(tagWriteModel.getName());
         return tag;
     }
 

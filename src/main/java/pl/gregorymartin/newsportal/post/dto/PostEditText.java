@@ -9,14 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 public
-class PostWriteModel {
+class PostEditText {
     private String title;
     private String lead;
     private String content;
-
-    private long categoryId;
-
-    private String photoUrl;
-    private String photoSource;
-    private List<String> tags;
 }

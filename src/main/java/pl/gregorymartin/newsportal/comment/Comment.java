@@ -9,6 +9,7 @@ import pl.gregorymartin.newsportal.utils.Audit;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Getter
@@ -30,6 +31,8 @@ public class Comment extends Audit {
     private AppUser appUser;
 
     @NotBlank(message = "Content cannot be blank")
+    @Size(min = 3, message = "Content should have more than 3 symbols")
+    @Size(max = 400, message = "Content should have less than 400 symbols")
     private String content;
 
     private long parentCommentId;

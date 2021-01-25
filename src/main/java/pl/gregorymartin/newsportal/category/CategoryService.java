@@ -5,11 +5,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-
-import static pl.gregorymartin.newsportal.exception.ErrorMessages.CATEGORY_NAME_CANNOT_BE_BLANK;
 
 @Service
 public
@@ -57,7 +54,9 @@ class CategoryService {
             throw new IllegalAccessException("Category '" + category.getName() + "' (ID: " + category.getId() + ") is fixed, cannot be edited");
         }
         category.setName(source.getName());
-        category.setParentCategoryId(source.getParentCategoryId());
+        if(source.getParentCategoryId() != 0){
+            category.setParentCategoryId(source.getParentCategoryId());
+        }
         return categoryRepository.save(category);
     }
 

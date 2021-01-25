@@ -9,17 +9,12 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 public
-class AppUserWriteModel {
+class AppUserEditCredentials {
     @NotBlank(message = "username cannot be blank")
     @Email(message = "this is not email address")
     private String username;
-    @NotBlank(message = "nickname cannot be blank")
-    private String nickname;
     @NotBlank(message = "password cannot be blank")
     private String password;
     @NotBlank(message = "password cannot be blank")
     private String passwordRepeat;
-
-    private String name;
-    private String surname;
 }

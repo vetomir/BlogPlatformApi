@@ -5,14 +5,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.gregorymartin.newsportal.appUser.AppUser;
+import pl.gregorymartin.newsportal.post.dto.PostEditPhoto;
+import pl.gregorymartin.newsportal.post.dto.PostEditText;
 import pl.gregorymartin.newsportal.post.dto.PostReadModel;
 import pl.gregorymartin.newsportal.post.dto.PostWriteModel;
 import pl.gregorymartin.newsportal.tag.Tag;
 import pl.gregorymartin.newsportal.tag.TagFactory;
-import pl.gregorymartin.newsportal.tag.TagQueryFactory;
 import pl.gregorymartin.newsportal.tag.dto.TagWriteModel;
 
 import java.net.URI;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -39,9 +41,9 @@ class PostRestController {
         return ResponseEntity.ok(PostFactory.toDto(posts));
     }
 
-    @GetMapping
-    public ResponseEntity<PostReadModel> readSingle(@RequestParam int id) {
-        Post post = service.getSinglePost(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<PostReadModel> readSingle(@PathVariable(name = "id") int postId) {
+        Post post = service.getSinglePost(postId);
         return ResponseEntity.ok(PostFactory.toDto(post));
     }
 
@@ -52,32 +54,39 @@ class PostRestController {
         return ResponseEntity.created(URI.create("/" + result.getId())).body(PostFactory.toDto(result));
     }
 
-    @PatchMapping
-    public ResponseEntity<PostReadModel> update(@RequestBody PostWriteModel post/*, @RequestParam(name = "user-id") long userId*/) {
-        Post result = service.editLeadAndContent(PostFactory.toEntity(post));
+    @PatchMapping("/{id}")
+    public ResponseEntity<PostReadModel> update(@PathVariable(name = "id") long postId, @RequestBody PostEditText post/*, @RequestParam(name = "user-id") long userId*/) {
+        Post result = service.editTitleLeadAndContent(PostEditTextFactory.toEntity(post), postId);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(PostFactory.toDto(result));
     }
 
-    @PatchMapping("/tags")
-    public ResponseEntity<PostReadModel> updateTags(@RequestBody List<TagWriteModel> tags, @RequestParam long id/*, @RequestParam(name = "user-id") long userId*/) {
-        Post result = service.editTags(id , (Set<Tag>) TagFactory.toEntity(tags));
+    @PatchMapping("/{id}/photo")
+    public ResponseEntity<PostReadModel> updatePhoto(@PathVariable(name = "id") long postId, @RequestBody PostEditPhoto post/*, @RequestParam(name = "user-id") long userId*/) {
+        Post result = service.editPhotoAndSource(PostPhotoFactory.toEntity(post), postId);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(PostFactory.toDto(result));
     }
 
-    @PatchMapping("/category")
-    public ResponseEntity<PostReadModel> updateCategory(@RequestParam long postId, @RequestParam long categoryId) {
+    @PatchMapping("/{id}/category")
+    public ResponseEntity<PostReadModel> updateCategory(@PathVariable(name = "id") long postId, @RequestParam(name = "id") long categoryId) {
         Post result = service.editCategory(postId, categoryId);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(PostFactory.toDto(result));
     }
-    @PatchMapping("/publish")
-    public ResponseEntity<PostReadModel> togglePublish(@RequestParam long postId) {
+
+    @PatchMapping("/{id}/tags")
+    public ResponseEntity<PostReadModel> updateTags(@PathVariable(name = "id") long postId, @RequestBody List<TagWriteModel> tags/*, @RequestParam(name = "user-id") long userId*/) {
+        Post result = service.editTags(postId , new HashSet<>(TagFactory.toEntity(tags)));
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(PostFactory.toDto(result));
+    }
+
+    @PatchMapping("/{id}/publish")
+    public ResponseEntity<PostReadModel> togglePublish(@PathVariable(name = "id") long postId) {
         Post result = service.togglePublishPost(postId);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(PostFactory.toDto(result));
     }
 
-    @DeleteMapping
-    public ResponseEntity delete(@RequestParam long id) {
-        service.deletePost(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable(name = "id") long postId) {
+        service.deletePost(postId);
         return ResponseEntity.noContent().build();
     }
 }

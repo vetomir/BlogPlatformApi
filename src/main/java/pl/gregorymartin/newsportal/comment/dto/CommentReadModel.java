@@ -16,6 +16,7 @@ class CommentReadModel {
     private String createdOn;
     private String content;
     private CommentQueryReadModel parentComment;
+    private long parentId;
 
     private PostQueryReadModel commentedPost;
 }

@@ -19,7 +19,10 @@ class CategoryFactory {
     public static Category toEntity(CategoryWriteModel categoryWriteModel) {
         Category category = new Category();
         category.setId(categoryWriteModel.getId());
-        category.setParentCategoryId(categoryWriteModel.getParent());
+        if (categoryWriteModel.getParent() != 0){
+            category.setParentCategoryId(categoryWriteModel.getParent());
+        }
+
         category.setName(categoryWriteModel.getName());
 
         return category;
@@ -38,6 +41,7 @@ class CategoryFactory {
         return CategoryReadModel.builder()
                 .id(category.getId())
                 .name(category.getName())
+                .parent(category.getParentCategoryId())
                 .posts(PostQueryFactory.toDto(new ArrayList<>(category.getPosts())))
                 .build();
     }

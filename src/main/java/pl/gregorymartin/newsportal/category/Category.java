@@ -27,7 +27,7 @@ public class Category {
     private long parentCategoryId;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id",  insertable = false)
+    @JoinColumn(name = "category_id")
     private Set<Post> posts = new HashSet<>();
 
     public Category() {

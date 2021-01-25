@@ -41,9 +41,11 @@ class AppUserFactory {
     public static AppUserReadModel toDto(AppUser appUser) {
         return AppUserReadModel.builder()
                 .id(appUser.getId())
+                .email(appUser.getUsername())
                 .nickname(appUser.getNickname())
                 .name(appUser.getName())
                 .surname(appUser.getSurname())
+                .photoUrl(appUser.getPhotoUrl())
                 .comments(CommentQueryFactory.toDto(new ArrayList<>(appUser.getComments())))
                 .posts(PostQueryFactory.toDto(new ArrayList<>(appUser.getPosts())))
                 .build();

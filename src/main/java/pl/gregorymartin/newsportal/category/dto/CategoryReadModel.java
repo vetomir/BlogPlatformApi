@@ -14,7 +14,7 @@ public
 class CategoryReadModel {
     private long id;
     private String name;
-    private String parent;
+    private long parent;
 
     private List<PostQueryReadModel> posts;
 

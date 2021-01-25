@@ -10,6 +10,7 @@ import pl.gregorymartin.newsportal.tag.Tag;
 import pl.gregorymartin.newsportal.utils.Audit;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
@@ -25,7 +26,8 @@ class Post extends Audit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank
+    @NotBlank(message = "Title cannot be blank")
+    @Size(min = 5, message = "Title sould have more than 5 letters")
     private String title;
     @URL
     private String photoUrl = "https://images.unsplash.com/photo-1586253633232-8161270c5b6e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80";
@@ -49,7 +51,7 @@ class Post extends Audit {
     private AppUser appUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", updatable = false)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToMany(fetch = FetchType.EAGER)

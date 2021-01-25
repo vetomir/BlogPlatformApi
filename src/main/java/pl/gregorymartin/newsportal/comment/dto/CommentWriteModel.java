@@ -13,5 +13,5 @@ class CommentWriteModel {
     @NotBlank(message = "content cannot be blank")
     private String content;
 
-    private long parentId;
+    private long parent = 0;
 }

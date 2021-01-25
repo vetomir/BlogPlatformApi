@@ -20,7 +20,9 @@ class CommentFactory {
     public static Comment toEntity(CommentWriteModel commentWriteModel) {
         Comment comment = new Comment();
         comment.setContent(commentWriteModel.getContent());
-        comment.setParentCommentId(commentWriteModel.getParentId());
+        if(commentWriteModel.getParent() != 0){
+            comment.setParentCommentId(commentWriteModel.getParent());
+        }
         return comment;
     }
     /*AppUser Read*/
@@ -39,6 +41,10 @@ class CommentFactory {
                 .commentedPost(PostQueryFactory.toDto(comments.getPost()))
                 .content(comments.getContent())
                 .author(AppUserQueryFactory.toDto(comments.getAppUser()))
+
+                //todo .parentComment()
+
+                .parentId(comments.getParentCommentId())
                 .createdOn(comments.formatCreatedOn())
                 .build();
     }

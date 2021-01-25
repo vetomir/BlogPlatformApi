@@ -1,5 +1,7 @@
 package pl.gregorymartin.newsportal.tag;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class TagService {
+    Logger logger = LoggerFactory.getLogger(TagService.class);
     private static final int PAGE_SIZE = 28;
 
     private final TagRepository tagRepository;
@@ -75,12 +78,11 @@ public class TagService {
     Tag editTagName(Tag source){
         Tag tag = getSingleTag(source.getId());
         tag.setName(source.getName());
-        return tag;
+        return tagRepository.save(tag);
     }
 
-    boolean deleteTag(long id){
-        Tag tag = getSingleTag(id);
-        tagRepository.delete(tag);
-        return true;
+    public void deleteUnusedTags(){
+        logger.info("Cleaning Tag Repository");
+        tagRepository.deleteUnusedTags();
     }
 }

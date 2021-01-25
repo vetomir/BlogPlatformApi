@@ -67,12 +67,22 @@ class PostService {
     }
 
     @Transactional
-    Post editLeadAndContent(Post source){
-        Post post = getSinglePost(source.getId());
+    Post editTitleLeadAndContent(Post source, long postId){
+        Post post = getSinglePost(postId);
 
+        post.setTitle(source.getTitle());
         post.setLead(source.getLead());
         post.setContent(source.getContent());
-        return post;
+        return postRepository.save(post);
+    }
+
+    @Transactional
+    Post editPhotoAndSource(Post source, long postId){
+        Post post = getSinglePost(postId);
+
+        post.setPhotoUrl(source.getPhotoUrl());
+        post.setPhotoSource(source.getPhotoSource());
+        return postRepository.save(post);
     }
 
     @Transactional
@@ -82,17 +92,18 @@ class PostService {
         Category category = categoryService.getSingleCategory(categoryId);
         post.setCategory(category);
 
-        return post;
+        return postRepository.save(post);
     }
+
 
     @Transactional
     Post editTags(long postId, Set<Tag> tags){
         Post post = getSinglePost(postId);
 
-        tags.forEach(tagService::addTag);
-        post.setTags(tags);
+        post.setTags(tagService.saveTags(tags));
 
-        return post;
+        tagService.deleteUnusedTags();
+        return postRepository.save(post);
     }
 
     @Transactional
@@ -100,7 +111,7 @@ class PostService {
         Post post = getSinglePost(postId);
         post.setPublished(!post.isPublished());
 
-        return post;
+        return postRepository.save(post);
     }
 
     void deletePost(long postId){

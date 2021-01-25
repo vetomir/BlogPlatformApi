@@ -4,19 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 public
-class PostWriteModel {
-    private String title;
-    private String lead;
-    private String content;
-
-    private long categoryId;
-
+class PostEditPhoto {
     private String photoUrl;
     private String photoSource;
-    private List<String> tags;
 }

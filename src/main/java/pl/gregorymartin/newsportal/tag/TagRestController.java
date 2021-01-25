@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/tag")
+@RequestMapping("/api/tags")
 //todo
 @CrossOrigin
 class TagRestController {
@@ -39,23 +39,17 @@ class TagRestController {
         return ResponseEntity.ok(TagFactory.toDto(tags));
     }
 
-    @GetMapping
-    public ResponseEntity<TagReadModel> readSingle(@RequestParam int id) {
-        Tag tag = service.getSingleTag(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<TagReadModel> readSingle(@PathVariable(name = "id") int tagId) {
+        Tag tag = service.getSingleTag(tagId);
         return ResponseEntity.ok(TagFactory.toDto(tag));
     }
 
-    @PatchMapping("/edit")
-    public ResponseEntity<TagReadModel> update(@RequestBody TagWriteModel source, @RequestParam int id) {
+    @PatchMapping("/{id}/edit")
+    public ResponseEntity<TagReadModel> update(@PathVariable(name = "id") int tagId, @RequestBody TagWriteModel source) {
         Tag tag = TagFactory.toEntity(source);
-        tag.setId(id);
+        tag.setId(tagId);
         Tag result = service.editTagName(tag);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(TagFactory.toDto(result));
-    }
-
-    @DeleteMapping
-    public ResponseEntity delete(@RequestParam long id) {
-        service.deleteTag(id);
-        return ResponseEntity.noContent().build();
     }
 }

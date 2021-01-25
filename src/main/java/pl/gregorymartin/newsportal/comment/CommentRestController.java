@@ -43,9 +43,9 @@ class CommentRestController {
         return ResponseEntity.ok(CommentFactory.toDto(comments));
     }
 
-    @GetMapping
-    public ResponseEntity<CommentReadModel> readSingle(@RequestParam int id) {
-        Comment comment = service.getSingleComment(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<CommentReadModel> readSingle(@PathVariable(name = "id") int commentId) {
+        Comment comment = service.getSingleComment(commentId);
         return ResponseEntity.ok(CommentFactory.toDto(comment));
     }
 
@@ -82,21 +82,21 @@ class CommentRestController {
 
     @PostMapping
     public ResponseEntity<CommentReadModel> create(@RequestBody CommentWriteModel comment, @RequestParam(name = "id") long postId, Authentication authentication/*, @RequestParam(name = "user-id") long userId*/) {
-        /*AppUser appUser = (AppUser) authentication.getPrincipal();*/
+        AppUser appUser = (AppUser) authentication.getPrincipal();
 
-        Comment result = service.addComment(CommentFactory.toEntity(comment), /*appUser.getId()*/ 1, postId);
+        Comment result = service.addComment(CommentFactory.toEntity(comment), appUser.getId(), postId);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(CommentFactory.toDto(result));
     }
 
-    @PatchMapping
-    public ResponseEntity<CommentReadModel> update(@RequestBody CommentWriteModel comment/*, @RequestParam(name = "user-id") long userId*/) {
-        Comment result = service.editComment(CommentFactory.toEntity(comment));
+    @PatchMapping("/{id}")
+    public ResponseEntity<CommentReadModel> update(@PathVariable(name = "id") long commentId, @RequestBody CommentWriteModel comment/*, @RequestParam(name = "user-id") long userId*/) {
+        Comment result = service.editComment(CommentFactory.toEntity(comment), commentId);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(CommentFactory.toDto(result));
     }
 
-    @DeleteMapping
-    public ResponseEntity delete(@RequestParam long id) {
-        service.deleteComment(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable(name = "id") long commentId) {
+        service.deleteComment(commentId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -35,9 +35,9 @@ class CategoryRestController {
         return ResponseEntity.ok(CategoryFactory.toDto(comments));
     }
 
-    @GetMapping
-    public ResponseEntity<CategoryReadModel> readSingle(@RequestParam int id) {
-        Category category = service.getSingleCategory(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryReadModel> readSingle(@PathVariable(name = "id") int categoryId) {
+        Category category = service.getSingleCategory(categoryId);
         return ResponseEntity.ok(CategoryFactory.toDto(category));
     }
 
@@ -55,9 +55,9 @@ class CategoryRestController {
         return ResponseEntity.created(URI.create("/" + result.getId())).body(CategoryFactory.toDto(result));
     }
 
-    @DeleteMapping
-    public ResponseEntity delete(@RequestParam long id) throws IllegalAccessException {
-        service.deleteCategory(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable(name = "id") long categoryId) throws IllegalAccessException {
+        service.deleteCategory(categoryId);
         return ResponseEntity.noContent().build();
     }
 }

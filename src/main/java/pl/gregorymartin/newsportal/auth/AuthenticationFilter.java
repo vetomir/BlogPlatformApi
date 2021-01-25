@@ -5,6 +5,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -38,6 +39,7 @@ class AuthenticationFilter extends OncePerRequestFilter {
                     }
                     String username = tokenService.getUsernameFromToken(token);
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
                     if (tokenService.isValidForUser(token, userDetails)) {
                         var authentication = new UsernamePasswordAuthenticationToken(
                                 userDetails,

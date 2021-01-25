@@ -101,10 +101,13 @@ public class CommentService {
     }
 
     @Transactional
-    Comment editComment(Comment source){
-        Comment comment = getSingleComment(source.getId());
+    Comment editComment(Comment source, long commentId){
+        Comment comment = getSingleComment(commentId);
         comment.setContent(source.getContent());
-        return comment;
+        if(source.getParentCommentId() != 0){
+            comment.setParentCommentId(source.getParentCommentId());
+        }
+        return commentRepository.save(comment);
     }
 
     void deleteComment(long commentId){

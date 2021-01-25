@@ -14,12 +14,13 @@ import java.util.List;
 public
 class AppUserReadModel {
     private long id;
-    private String username;
+    private String email;
 
     private String nickname;
 
     private String name;
     private String surname;
+    private String photoUrl;
 
     private List<PostQueryReadModel> posts;
 

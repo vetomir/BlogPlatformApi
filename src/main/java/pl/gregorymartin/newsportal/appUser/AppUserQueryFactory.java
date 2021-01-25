@@ -21,9 +21,11 @@ public class AppUserQueryFactory {
     public static AppUserQueryReadModel toDto(AppUser appUser) {
         return AppUserQueryReadModel.builder()
                 .id(appUser.getId())
+                .email(appUser.getUsername())
                 .nickname(appUser.getNickname())
                 .name(appUser.getName())
                 .surname(appUser.getSurname())
+                .photoUrl(appUser.getPhotoUrl())
                 .build();
     }
 }
