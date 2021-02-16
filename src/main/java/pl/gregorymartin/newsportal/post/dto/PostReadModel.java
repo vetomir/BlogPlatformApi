@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.gregorymartin.newsportal.appUser.dto.AppUserQueryReadModel;
 import pl.gregorymartin.newsportal.category.dto.CategoryQueryReadModel;
+import pl.gregorymartin.newsportal.comment.dto.CommentQueryReadModel;
 import pl.gregorymartin.newsportal.comment.dto.CommentReadModel;
 import pl.gregorymartin.newsportal.tag.dto.TagQueryReadModel;
 
@@ -32,5 +33,5 @@ class PostReadModel {
 
     private List<TagQueryReadModel> tags;
 
-    private List<CommentReadModel> comments;
+    private List<CommentQueryReadModel> comments;
 }

@@ -20,7 +20,8 @@ public class CommentQueryFactory {
     public static CommentQueryReadModel toDto(Comment comments) {
         return CommentQueryReadModel.builder()
                 .id(comments.getId())
-                .authorName(comments.getAppUser().getName())
+                .authorNickname(comments.getAppUser().getNickname())
+                .authorAvatar(comments.getAppUser().getPhotoUrl())
                 .createdOn(comments.formatCreatedOn())
                 .content(comments.getContent())
                 .build();

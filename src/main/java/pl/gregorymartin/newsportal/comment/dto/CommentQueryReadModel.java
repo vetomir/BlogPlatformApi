@@ -10,7 +10,8 @@ import lombok.Setter;
 public
 class CommentQueryReadModel {
     private long id;
-    private String authorName;
+    private String authorNickname;
+    private String authorAvatar;
     private String createdOn;
     private String content;
 }

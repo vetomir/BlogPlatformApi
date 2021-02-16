@@ -45,7 +45,7 @@ class TagRestController {
         return ResponseEntity.ok(TagFactory.toDto(tag));
     }
 
-    @PatchMapping("/{id}/edit")
+    @PatchMapping("/{id}")
     public ResponseEntity<TagReadModel> update(@PathVariable(name = "id") int tagId, @RequestBody TagWriteModel source) {
         Tag tag = TagFactory.toEntity(source);
         tag.setId(tagId);

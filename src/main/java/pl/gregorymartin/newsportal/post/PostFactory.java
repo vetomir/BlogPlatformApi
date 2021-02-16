@@ -3,6 +3,7 @@ package pl.gregorymartin.newsportal.post;
 
 import pl.gregorymartin.newsportal.appUser.AppUserQueryFactory;
 import pl.gregorymartin.newsportal.category.CategoryQueryFactory;
+import pl.gregorymartin.newsportal.comment.CommentQueryFactory;
 import pl.gregorymartin.newsportal.post.dto.PostReadModel;
 import pl.gregorymartin.newsportal.post.dto.PostWriteModel;
 import pl.gregorymartin.newsportal.tag.Tag;
@@ -55,12 +56,14 @@ public class PostFactory {
                 .title(post.getTitle())
                 .lead(post.getLead())
                 .content(post.getContent())
+                .createdOn(post.formatCreatedOn())
                 .author(AppUserQueryFactory.toDto(post.getAppUser()))
                 .photoUrl(post.getPhotoUrl())
                 .photoSource(post.getPhotoSource())
                 .published(post.isPublished())
                 .category(CategoryQueryFactory.toDto(post.getCategory()))
                 .tags(TagQueryFactory.toDto(new ArrayList<>( post.getTags() )))
+                .comments(CommentQueryFactory.toDto(new ArrayList<>(post.getComments())))
                 .build();
     }
 }

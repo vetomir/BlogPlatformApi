@@ -26,6 +26,8 @@ public class Category {
 
     private long parentCategoryId;
 
+    private String color;
+
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Set<Post> posts = new HashSet<>();

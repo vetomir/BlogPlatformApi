@@ -22,8 +22,10 @@ class Warmup implements ApplicationListener<ContextRefreshedEvent> {
     }
     void loadData(){
 
-        service.addAppUser(new AppUser("test1@test.pl","test123","test_user1"));
-        service.addAppUser(new AppUser("test2@test.pl","test123","test_user2"));
-        service.addAppUser(new AppUser("test3@test.pl","test123","test_user3"));
+        service.addAppUser(new AppUser("test1@test.pl","test123","incurable_optimist123", "Arthur", "Schopenhauer", "https://krainaparadoksow.pl/wp-content/uploads/2018/10/arthur-schopenhauer.jpg"));
+        service.addAppUser(new AppUser("test2@test.pl","test123","hydraulik222", "Lech", "Wałęsa", "https://ocdn.eu/pulscms-transforms/1/b2pk9kpTURBXy85MzJmYTg0NmNkOGQxN2M5MWM3ZjI5MDY2YzBiNDRjMC5qcGeTlQMAzKbNFMPNC62TBc0DFM0BvJMJpmNlYzYyZQaBoTAB/lech-walesa.jpg"));
+        service.addAppUser(new AppUser("test3@test.pl","test123","ksieciunio", "Mieszko", "Pierwszy", "https://tolstoj.eu/wp-content/uploads/2016/10/10zeta.jpg"));
+        service.addAppUser(new AppUser("test4@test.pl","test123","bratanek", "Stefan", "Batory", "https://kurierhistoryczny.pl/uploads/articles/387/batory_rqx9ox.jpg"));
+        service.addAppUser(new AppUser("test5@test.pl","test123","mocny_full", "Ferdynand", "Kiepski", "https://ocdn.eu/pulscms-transforms/1/zQMk9kpTURBXy9hMjJjZTczYTVhODAwYjlhYTY0NGQ2YjlkMzY0YzYwYS5qcGeSlQMDzQJUzRAfzQkSlQLNAwcAw8OBoTAF"));
     }
 }

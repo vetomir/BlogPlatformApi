@@ -2,8 +2,11 @@ package pl.gregorymartin.newsportal.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,7 @@ import java.util.Map;
 
 @Service
 class TokenService {
+    Logger logger = LoggerFactory.getLogger(TokenService.class);
     private final JwtConfigurationProperties properties;
 
     TokenService(JwtConfigurationProperties properties) {
@@ -51,6 +55,7 @@ class TokenService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+
     }
 
     private Key key() {

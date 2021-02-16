@@ -20,22 +20,22 @@ public class Comment extends Audit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", updatable = false)
-    private Post post;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "app_user_id", updatable = false)
-    private AppUser appUser;
-
     @NotBlank(message = "Content cannot be blank")
     @Size(min = 3, message = "Content should have more than 3 symbols")
     @Size(max = 400, message = "Content should have less than 400 symbols")
     private String content;
 
     private long parentCommentId;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "app_user_id", updatable = false)
+    private AppUser appUser;
 
     public Comment() {
     }

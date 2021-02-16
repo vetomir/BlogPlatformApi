@@ -15,6 +15,7 @@ class CategoryReadModel {
     private long id;
     private String name;
     private long parent;
+    private String color;
 
     private List<PostQueryReadModel> posts;
 

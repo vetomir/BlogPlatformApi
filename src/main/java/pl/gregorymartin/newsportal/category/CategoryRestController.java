@@ -3,6 +3,7 @@ package pl.gregorymartin.newsportal.category;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.gregorymartin.newsportal.category.dto.CategoryQueryReadModel;
 import pl.gregorymartin.newsportal.category.dto.CategoryReadModel;
 import pl.gregorymartin.newsportal.category.dto.CategoryWriteModel;
 import pl.gregorymartin.newsportal.utils.IllegalExceptionProcessing;
@@ -14,8 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/categories")
 @IllegalExceptionProcessing
-//todo
-@CrossOrigin
 class CategoryRestController {
     private final CategoryService service;
 
@@ -33,6 +32,17 @@ class CategoryRestController {
         List<Category> comments = service.getCategories(pageNumber, sortDirection, sortByVariable);
 
         return ResponseEntity.ok(CategoryFactory.toDto(comments));
+    }
+    @GetMapping("/query")
+    public ResponseEntity<List<CategoryQueryReadModel>> readAllDto(@RequestParam(required = false) Integer page, Sort.Direction sort, String sortBy
+            /*@AuthenticationPrincipal UsernamePasswordAuthenticationToken user*/) {
+        int pageNumber = page != null && page >= 0 ? page : 0;
+        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
+        String sortByVariable = sortBy != null ? sortBy : "id";
+
+        List<Category> comments = service.getCategories(pageNumber, sortDirection, sortByVariable);
+
+        return ResponseEntity.ok(CategoryQueryFactory.toDto(comments));
     }
 
     @GetMapping("/{id}")

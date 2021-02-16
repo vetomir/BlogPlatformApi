@@ -42,6 +42,7 @@ class CategoryFactory {
                 .id(category.getId())
                 .name(category.getName())
                 .parent(category.getParentCategoryId())
+                .color(category.getColor())
                 .posts(PostQueryFactory.toDto(new ArrayList<>(category.getPosts())))
                 .build();
     }

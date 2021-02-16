@@ -45,6 +45,7 @@ class AppUserFactory {
                 .nickname(appUser.getNickname())
                 .name(appUser.getName())
                 .surname(appUser.getSurname())
+                .role(appUser.getRole().getUserRole())
                 .photoUrl(appUser.getPhotoUrl())
                 .comments(CommentQueryFactory.toDto(new ArrayList<>(appUser.getComments())))
                 .posts(PostQueryFactory.toDto(new ArrayList<>(appUser.getPosts())))

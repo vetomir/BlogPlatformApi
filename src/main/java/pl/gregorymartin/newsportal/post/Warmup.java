@@ -29,20 +29,102 @@ class Warmup implements ApplicationListener<ContextRefreshedEvent> {
 
     }
     void loadData(){
-        samplePost("Post 1", 1, 1);
-        samplePost("Post 2", 2, 1);
-        samplePost("Post 3", 3, 1);
-        samplePost("Post 4", 1, 2);
-        samplePost("Post 5", 4, 2);
-        samplePost("Post 6", 1, 2);
-        samplePost("Post 7", 2, 3);
-        samplePost("Post 8", 2, 3);
-        samplePost("Post 9", 2, 3);
+        samplePost(
+                "The ancient Roman technology that is solving the space industry’s antenna problem",
+                1,
+                1,
+                "https://images.unsplash.com/photo-1451187863213-d1bcbaae3fa3?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
+                );
+        samplePost("Europe’s armies look for digital sovereignty in new messaging tech",
+                2,
+                1,
+                "https://images.unsplash.com/photo-1483782817618-9804403024ba?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1973&q=80"
+                );
+        samplePost("Three tips on preparing for an IPO",
+                3,
+                1,
+                "https://images.unsplash.com/photo-1538391543564-047a76156421?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1901&q=80"
+                );
+        samplePost("European tech workers are moving to the countryside — but will they stick around?",
+                1,
+                2,
+                "https://images.unsplash.com/photo-1457305237443-44c3d5a30b89?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1953&q=80"
+                );
+        samplePost("Latitude: LocalGlobe’s ‘breakout’ fund breaks cove",
+                4,
+                2,
+                "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+                );
+        samplePost("2020 was a record year for VC investment in Poland",
+                1,
+                2,
+                "https://images.unsplash.com/photo-1483478550801-ceba5fe50e8e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+                );
+        samplePost("Frontline raises fresh €70m seed fund",
+                2,
+                3,
+                "https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+                );
+        samplePost("Atomico launches third angel programme",
+                2,
+                3,
+                "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixid=MXwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2089&q=80"
+                );
+        samplePost("Oxford University set to launch up to 20 sustainability startups in two years",
+                2,
+                3,
+                "https://images.unsplash.com/photo-1612827914912-cad82af55539?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1916&q=80"
+                );
+        samplePost("Leadership after Covid: upgrade please",
+                1,
+                3,
+                "https://images.unsplash.com/photo-1612828898781-9c53031d0420?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1902&q=80"
+                );
+        samplePost("The Czech startup helping us make better use of our batteries",
+                3,
+                5,
+                "https://images.unsplash.com/photo-1612889823446-ce8426381ed8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1900&q=80"
+                );
+        samplePost("The most active angel investors in the UK",
+                2,
+                1,
+                "https://images.unsplash.com/photo-1612830079777-54121ec93c40?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2134&q=80"
+                );
+        samplePost("Checkout.com becomes Europe’s largest unicorn with $15bn valuation",
+                2,
+                1,
+                "https://images.unsplash.com/photo-1612889047716-3128cdd3ce58?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+        );
+        samplePost("Oxford University set to launch up to 20 sustainability startups in two years",
+                2,
+                5,
+                "https://images.unsplash.com/photo-1612827914912-cad82af55539?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1916&q=80"
+        );
+        samplePost("Leadership after Covid: upgrade please",
+                1,
+                4,
+                "https://images.unsplash.com/photo-1612828898781-9c53031d0420?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1902&q=80"
+        );
+        samplePost("The Czech startup helping us make better use of our batteries",
+                3,
+                4,
+                "https://images.unsplash.com/photo-1612889823446-ce8426381ed8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1900&q=80"
+        );
+        samplePost("The most active angel investors in the UK",
+                2,
+                5,
+                "https://images.unsplash.com/photo-1612830079777-54121ec93c40?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2134&q=80"
+        );
+        samplePost("Checkout.com becomes Europe’s largest unicorn with $15bn valuation",
+                2,
+                4,
+                "https://images.unsplash.com/photo-1612889047716-3128cdd3ce58?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+        );
 
     }
 
-    void samplePost(String title, int category, int user){
-        Post post = new Post(title, loremLead, loremContent);
+    void samplePost(String title, int category, int user, String photo){
+        Post post = new Post(title, loremLead, loremContent, photo);
         post.setTags(Set.of(new Tag("Tag1"),new Tag("Tag2"),new Tag("Tag3")));
         service.addPost(post, category, user);
     }

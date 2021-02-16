@@ -21,6 +21,7 @@ class AppUserReadModel {
     private String name;
     private String surname;
     private String photoUrl;
+    private String role;
 
     private List<PostQueryReadModel> posts;
 

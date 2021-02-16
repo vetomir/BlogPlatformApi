@@ -1,5 +1,7 @@
 package pl.gregorymartin.newsportal.post;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -8,9 +10,11 @@ import pl.gregorymartin.newsportal.appUser.AppUser;
 import pl.gregorymartin.newsportal.appUser.AppUserService;
 import pl.gregorymartin.newsportal.category.Category;
 import pl.gregorymartin.newsportal.category.CategoryService;
+import pl.gregorymartin.newsportal.post.dto.PostReadModel;
 import pl.gregorymartin.newsportal.tag.Tag;
 import pl.gregorymartin.newsportal.tag.TagService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -37,10 +41,10 @@ class PostService {
         return postRepository.findAll();
     }
 
-    public List<Post> getPosts(int page, Sort.Direction sort, String sortBy) {
+    public List<Post> getPosts(int page, Sort.Direction sort, String sortBy, int number) {
 
         return postRepository.findAll(
-                PageRequest.of(page, PAGE_SIZE,
+                PageRequest.of(page, number,
                         Sort.by(sort, sortBy)
                 )
         ).getContent();
@@ -104,6 +108,31 @@ class PostService {
 
         tagService.deleteUnusedTags();
         return postRepository.save(post);
+    }
+
+    public long numberOfResultsFromSearchPost( String query){
+        return postRepository.getSizeOfAllByContainedQuery(query);
+    }
+    public Page<Post> searchPosts(String query, int page, Sort.Direction sort, String sortBy, int items) {
+        String[] queryArray = query.split(" ");
+
+
+        List<Post> result = new ArrayList<>();
+        for (String q : queryArray) {
+            Page<Post> allByContainedQuery = postRepository.findAllByContainedQuery(q, PageRequest.of(page, items,
+                    Sort.by(sort, sortBy)));
+
+            result.addAll(allByContainedQuery.getContent());
+        }
+        List<Post> resultDto = result.stream()
+                .distinct()
+                .collect(Collectors.toList());
+
+        PageImpl<Post> postReadModels = new PageImpl<>(
+                resultDto, PageRequest.of(page, items,
+                Sort.by(sort, sortBy)), items);
+
+        return postReadModels;
     }
 
     @Transactional

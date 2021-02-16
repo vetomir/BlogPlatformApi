@@ -17,5 +17,6 @@ class PostQueryReadModel {
     private String photoUrl;
     private String author;
     private String categoryName;
+    private String createdOn;
     private List<String> tags;
 }

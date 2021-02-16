@@ -1,5 +1,6 @@
 package pl.gregorymartin.newsportal.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
@@ -79,6 +80,18 @@ public class RestExceptionHandler {
         }
     }
 
+    @ExceptionHandler(ExpiredJwtException.class)
+    protected ResponseEntity<ErrorDetails> handleOtherExceptions(ExpiredJwtException e, HttpServletRequest request) {
+        logger.warn("{} , message: '{}'", e.getClass().getSimpleName(), e.getMessage());
+
+        try{
+            ErrorDetails errorDetails = new ErrorDetails(new Date(), List.of(e.getMessage()), request.getRequestURI());
+
+            return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+        }catch (Exception f){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorDetails> handleOtherExceptions(Exception e, HttpServletRequest request) {
         logger.warn("{} , message: '{}'", e.getClass().getSimpleName(), e.getMessage());

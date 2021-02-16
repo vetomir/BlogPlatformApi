@@ -24,9 +24,20 @@ class Warmup implements ApplicationListener<ContextRefreshedEvent> {
     }
     void loadData(){
         //service.addPost(new Post("Title 1", "Lorem", "Lorem ipsum dolor sit amet, "));
-        service.addComment(new Comment(loremContent, 0), 1 , 1);
-        service.addComment(new Comment(loremContent, 0), 1 , 1);
-        service.addComment(new Comment(loremContent, 0), 1 , 1);
-        service.addComment(new Comment(loremContent, 1), 1 , 1);
+        service.addComment(new Comment(loremContent, 0), 1 , 2);
+        service.addComment(new Comment(loremContent, 0), 2 , 1);
+        service.addComment(new Comment(loremContent, 0), 3 , 3);
+        service.addComment(new Comment(loremContent, 1), 1 , 2);
+        service.addComment(new Comment(loremContent, 1), 2 , 4);
+        service.addComment(new Comment(loremContent, 1), 3 , 6);
+        service.addComment(new Comment(loremContent, 1), 2 , 7);
+        service.addComment(new Comment(loremContent, 1), 1 , 8);
+        service.addComment(new Comment(loremContent, 1), 3 , 8);
+        service.addComment(new Comment(loremContent, 1), 2 , 8);
+        service.addComment(new Comment(loremContent, 1), 2 , 9);
+        service.addComment(new Comment(loremContent, 1), 1 , 10);
+        service.addComment(new Comment(loremContent, 1), 3 , 2);
+        service.addComment(new Comment(loremContent, 1), 1 , 10);
+        service.addComment(new Comment(loremContent, 1), 2 , 1);
     }
 }

@@ -21,6 +21,7 @@ public class CategoryQueryFactory {
         return CategoryQueryReadModel.builder()
                 .id(category.getId())
                 .name(category.getName())
+                .color(category.getColor())
                 .build();
     }
 }

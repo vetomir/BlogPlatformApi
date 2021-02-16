@@ -57,7 +57,7 @@ public class AppUser implements UserDetails {
 
     public AppUser() {
         role = Role.ROLE_USER;
-        photoUrl = "https://cdn.onlinewebfonts.com/svg/img_569204.png";
+        photoUrl = "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80";
     }
 
     AppUser(@NotBlank(message = "username cannot be blank") final String username, @NotBlank(message = "password cannot be blank") final String password, @NotBlank(message = "name cannot be blank") final String nickname) {
@@ -66,7 +66,18 @@ public class AppUser implements UserDetails {
         this.nickname = nickname;
 
         role = Role.ROLE_USER;
-        photoUrl = "https://cdn.onlinewebfonts.com/svg/img_569204.png";
+        photoUrl = "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80";
+    }
+
+    AppUser(@NotBlank(message = "username cannot be blank") @Email(message = "this is not email address") final String username, @NotBlank(message = "password cannot be blank") final String password, @NotBlank(message = "nickname cannot be blank") final String nickname, final String name, final String surname, final String photoUrl) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.name = name;
+        this.surname = surname;
+        this.photoUrl = photoUrl;
+
+        role = Role.ROLE_USER;
     }
 
     @Override

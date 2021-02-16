@@ -10,6 +10,7 @@ import pl.gregorymartin.newsportal.appUser.dto.AppUserReadModel;
 @Setter
 public
 class PostFeed {
+    private long id;
     private String title;
     private String photoUrl;
     private AppUserReadModel author;

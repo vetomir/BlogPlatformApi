@@ -32,13 +32,18 @@ class CommentRestController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<CommentReadModel>> readAll(@RequestParam(required = false) Integer page, Sort.Direction sort, String sortBy
+    public ResponseEntity<List<CommentReadModel>> readAll(
+            @RequestParam(required = false) Integer page,
+            Sort.Direction sort,
+            String sortBy,
+            @RequestParam(required = false) Integer number
             /*@AuthenticationPrincipal UsernamePasswordAuthenticationToken user*/) {
         int pageNumber = page != null && page >= 0 ? page : 0;
         Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
         String sortByVariable = sortBy != null ? sortBy : "id";
+        int numberOfPosts = number != null && number >= 0 ? number: 25;
 
-        List<Comment> comments = service.getComments(pageNumber, sortDirection, sortByVariable);
+        List<Comment> comments = service.getComments(pageNumber, sortDirection, sortByVariable, numberOfPosts);
 
         return ResponseEntity.ok(CommentFactory.toDto(comments));
     }
@@ -80,8 +85,8 @@ class CommentRestController {
         return ResponseEntity.ok(CommentFactory.toDto(comments));
     }
 
-    @PostMapping
-    public ResponseEntity<CommentReadModel> create(@RequestBody CommentWriteModel comment, @RequestParam(name = "id") long postId, Authentication authentication/*, @RequestParam(name = "user-id") long userId*/) {
+    @PostMapping("/{id}")
+    public ResponseEntity<CommentReadModel> create(@RequestBody CommentWriteModel comment, @PathVariable(name = "id") long postId, Authentication authentication/*, @RequestParam(name = "user-id") long userId*/) {
         AppUser appUser = (AppUser) authentication.getPrincipal();
 
         Comment result = service.addComment(CommentFactory.toEntity(comment), appUser.getId(), postId);

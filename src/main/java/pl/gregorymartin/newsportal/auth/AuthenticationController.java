@@ -16,7 +16,7 @@ import pl.gregorymartin.newsportal.auth.dto.AuthenticationResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/authenticate")
+@RequestMapping("/api/authenticate")
 class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
@@ -36,7 +36,10 @@ class AuthenticationController {
                     )
             );
             var user = (UserDetails) auth.getPrincipal();
-            return ResponseEntity.ok(new AuthenticationResponse(tokenService.generateNewToken(user)));
+
+            String token = tokenService.generateNewToken(user);
+            System.out.println(token);
+            return ResponseEntity.ok(new AuthenticationResponse(token));
 
         }catch (BadCredentialsException e){
             throw new IllegalArgumentException("Password is invalid");

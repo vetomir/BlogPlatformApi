@@ -30,10 +30,10 @@ public class CommentService {
         return commentRepository.findAll();
     }
 
-    public List<Comment> getComments(int page, Sort.Direction sort, String sortBy) {
+    public List<Comment> getComments(int page, Sort.Direction sort, String sortBy, int number) {
 
         return commentRepository.findAll(
-                PageRequest.of(page, PAGE_SIZE,
+                PageRequest.of(page, number,
                         Sort.by(sort, sortBy)
                 )
         ).getContent();

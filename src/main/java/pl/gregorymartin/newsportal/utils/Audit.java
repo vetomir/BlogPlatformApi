@@ -33,10 +33,10 @@ class Audit {
         long numberOfDays = ChronoUnit.DAYS.between(createdOn, LocalDateTime.now());
         String date = numberOfDays + " days ago";
         if (numberOfDays == 0) {
-            date = "Today";
+            date = "today";
         }
         if (numberOfDays >= 7) {
-            return "Week ago";
+            return "week ago";
         }
         if (numberOfDays >= 14) {
             long numberOfWeeks = ChronoUnit.WEEKS.between(createdOn, LocalDateTime.now());

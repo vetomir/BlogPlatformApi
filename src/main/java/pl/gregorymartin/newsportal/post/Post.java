@@ -32,19 +32,21 @@ class Post extends Audit {
     @URL
     private String photoUrl = "https://images.unsplash.com/photo-1586253633232-8161270c5b6e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80";
     private String photoSource = "Unsplash.com";
-    @NotBlank
+
+    @NotBlank(message = "Lead cannot be blank")
     @Column( length = 400 )
     @Size(min = 50, message = "Lead should have more than 50 symbols")
     @Size(max = 400, message = "Lead should have less than 400 symbols")
     private String lead;
 
-    @NotBlank
+    @NotBlank(message = "Content cannot be blank")
     @Column(length = 10000)
     @Size(min = 400, message = "Content should have more than 400 symbols")
     @Size(max = 10000, message = "Content should have less than 10000 symbols")
     private String content;
 
     private boolean published = false;
+    private boolean header = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "app_user_id", updatable = false)
@@ -63,9 +65,9 @@ class Post extends Audit {
                     name = "tag_id", referencedColumnName = "id"))
     private Set<Tag> tags = new HashSet<>();
 
-
+    
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "post_id",  insertable = false)
+    @JoinColumn(name = "post_id")
     private Set<Comment> comments = new HashSet<>();
 
     public Post() {
@@ -76,6 +78,13 @@ class Post extends Audit {
         this.title = title;
         this.lead = lead;
         this.content = content;
+    }
+
+    Post(@NotBlank final String title, @NotBlank final String lead, @NotBlank final String content, @NotBlank final String photoUrl) {
+        this.title = title;
+        this.lead = lead;
+        this.content = content;
+        this.photoUrl = photoUrl;
     }
 
     Post(@NotBlank final String title, @NotBlank @Size(min = 50, message = "Lead should have more than 50 symbols") @Size(max = 400, message = "Lead should have less than 400 symbols") final String lead, @NotBlank @Size(min = 400, message = "Content should have more than 400 symbols") @Size(max = 10000, message = "Content should have less than 10000 symbols") final String content, final AppUser appUser, final Category category, final Set<Tag> tags) {

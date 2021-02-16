@@ -2,6 +2,7 @@ package pl.gregorymartin.newsportal.appUser;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.gregorymartin.newsportal.appUser.dto.*;
 
@@ -32,6 +33,17 @@ class AppUserRestController {
         return ResponseEntity.ok(AppUserFactory.toDto(appUsers));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<AppUserReadModel> readLoggedUser(Authentication authentication) throws IllegalAccessException {
+        if(authentication == null){
+            throw new IllegalAccessException("You must to logged in first");
+        }
+        AppUser authUser = (AppUser) authentication.getPrincipal();
+
+        AppUser appUser = service.getSingleAppUser(authUser.getId());
+        return ResponseEntity.ok(AppUserFactory.toDto(appUser));
+    }
+
     @GetMapping
     public ResponseEntity<AppUserReadModel> readSingle(@RequestParam(name = "id") int userId) {
         AppUser appUser = service.getSingleAppUser(userId);
@@ -54,14 +66,14 @@ class AppUserRestController {
     }
 
     @PatchMapping("/{id}/credentials")
-    public ResponseEntity<AppUserReadModel> updateCredentials(@PathVariable(name = "id") int userId, @RequestBody @Valid AppUserEditCredentials source) {
+    public ResponseEntity<AppUserQueryReadModel> updateCredentials(@PathVariable(name = "id") int userId, @RequestBody @Valid AppUserEditCredentials source) {
         if(!source.getPassword().equals(source.getPasswordRepeat())){
             throw new IllegalArgumentException("passwords are not the same");
         }
         AppUser appUser = AppUserEditCredentialsFactory.toEntity(source);
         appUser.setId(userId);
         AppUser result = service.editAppUserCredentials(appUser);
-        return ResponseEntity.created(URI.create("/" + result.getId())).body(AppUserFactory.toDto(result));
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(AppUserQueryFactory.toDto(result));
     }
 
     @PatchMapping("/{id}/profile")

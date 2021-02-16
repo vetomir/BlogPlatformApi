@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public
 class PostHint {
+    private long id;
     private String title;
     private String categoryName;
 }

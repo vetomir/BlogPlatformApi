@@ -1,35 +1,33 @@
 package pl.gregorymartin.newsportal.post;
 
-import pl.gregorymartin.newsportal.post.dto.PostQueryReadModel;
-import pl.gregorymartin.newsportal.tag.Tag;
+import pl.gregorymartin.newsportal.appUser.AppUserQueryFactory;
+import pl.gregorymartin.newsportal.post.dto.PostHint;
+import pl.gregorymartin.newsportal.post.dto.PostHintQuery;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PostQueryFactory {
+public class PostHintQueryFactory {
     /*Post Read*/
-    public static List<PostQueryReadModel> toDto(List<Post> post) {
+    public static List<PostHintQuery> toDto(List<Post> post) {
         if (post != null) {
             return post.stream()
-                    .map(PostQueryFactory::toDto)
+                    .map(PostHintQueryFactory::toDto)
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
     }
 
-    public static PostQueryReadModel toDto(Post post) {
-        return PostQueryReadModel.builder()
+    public static PostHintQuery toDto(Post post) {
+        return PostHintQuery.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .lead(post.getLead())
-                .author(post.getAppUser().getNickname())
                 .photoUrl(post.getPhotoUrl())
                 .createdOn(post.formatCreatedOn())
+                .author(AppUserQueryFactory.toDto(post.getAppUser()))
                 .categoryName(post.getCategory().getName())
-                .tags(post.getTags().stream()
-                        .map(Tag::getName)
-                        .collect(Collectors.toList()))
                 .build();
     }
 }
