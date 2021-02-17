@@ -14,6 +14,7 @@ class PostHeader {
     private long id;
     private String title;
     private String lead;
+    private boolean published;
     private String photoUrl;
     private String author;
     private String categoryName;

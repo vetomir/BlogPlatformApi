@@ -12,6 +12,7 @@ public
 class PostFeed {
     private long id;
     private String title;
+    private boolean published;
     private String photoUrl;
     private AppUserReadModel author;
     private String categoryName;

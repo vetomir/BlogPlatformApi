@@ -124,7 +124,7 @@ class Warmup implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     void samplePost(String title, int category, int user, String photo){
-        Post post = new Post(title, loremLead, loremContent, photo);
+        Post post = new Post(title, loremLead, loremContent, photo, true);
         post.setTags(Set.of(new Tag("Tag1"),new Tag("Tag2"),new Tag("Tag3")));
         service.addPost(post, category, user);
     }

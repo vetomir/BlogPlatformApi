@@ -11,6 +11,7 @@ import pl.gregorymartin.newsportal.tag.Tag;
 import pl.gregorymartin.newsportal.tag.TagFactory;
 import pl.gregorymartin.newsportal.tag.dto.TagWriteModel;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.HashSet;
@@ -83,14 +84,13 @@ class PostRestController {
     @GetMapping("/{id}")
     public ResponseEntity<PostReadModel> readSingle(@PathVariable(name = "id") int postId) {
         Post post = service.getSinglePost(postId);
-        System.out.println(post);
         return ResponseEntity.ok(PostFactory.toDto(post));
     }
 
     @PostMapping
-    public ResponseEntity<PostReadModel> create(@RequestBody PostWriteModel post, Authentication authentication) throws IllegalAccessException {
+    public ResponseEntity<PostReadModel> create(@RequestBody @Valid PostWriteModel post, Authentication authentication) throws IllegalAccessException {
         if(authentication == null){
-            throw new IllegalAccessException("You must to logged in first");
+            throw new IllegalAccessException("You must be logged in first");
         }
         AppUser appUser = (AppUser) authentication.getPrincipal();
         Post result = service.addPost(PostFactory.toEntity(post), post.getCategoryId(), appUser.getId());
@@ -98,13 +98,13 @@ class PostRestController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<PostReadModel> update(@PathVariable(name = "id") long postId, @RequestBody PostEditText post) {
+    public ResponseEntity<PostReadModel> update(@PathVariable(name = "id") long postId, @RequestBody @Valid PostEditText post) {
         Post result = service.editTitleLeadAndContent(PostEditTextFactory.toEntity(post), postId);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(PostFactory.toDto(result));
     }
 
     @PatchMapping("/{id}/photo")
-    public ResponseEntity<PostReadModel> updatePhoto(@PathVariable(name = "id") long postId, @RequestBody PostEditPhoto post) {
+    public ResponseEntity<PostReadModel> updatePhoto(@PathVariable(name = "id") long postId, @RequestBody @Valid PostEditPhoto post) {
         Post result = service.editPhotoAndSource(PostPhotoFactory.toEntity(post), postId);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(PostFactory.toDto(result));
     }
@@ -129,6 +129,7 @@ class PostRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable(name = "id") long postId) {
+        System.out.println(postId);
         service.deletePost(postId);
         return ResponseEntity.noContent().build();
     }

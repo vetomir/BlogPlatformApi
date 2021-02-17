@@ -24,6 +24,7 @@ public class PostHintQueryFactory {
                 .id(post.getId())
                 .title(post.getTitle())
                 .lead(post.getLead())
+                .published(post.isPublished())
                 .photoUrl(post.getPhotoUrl())
                 .createdOn(post.formatCreatedOn())
                 .author(AppUserQueryFactory.toDto(post.getAppUser()))

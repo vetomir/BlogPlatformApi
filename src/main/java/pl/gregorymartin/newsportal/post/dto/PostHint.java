@@ -11,5 +11,6 @@ public
 class PostHint {
     private long id;
     private String title;
+    private boolean published;
     private String categoryName;
 }

@@ -23,6 +23,7 @@ public class PostHintFactory {
         return PostHint.builder()
                 .id(post.getId())
                 .title(post.getTitle())
+                .published(post.isPublished())
                 .categoryName(post.getCategory().getName())
                 .build();
     }

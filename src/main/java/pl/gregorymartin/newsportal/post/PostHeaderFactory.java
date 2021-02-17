@@ -25,6 +25,7 @@ public class PostHeaderFactory {
                 .id(post.getId())
                 .title(post.getTitle())
                 .lead(post.getLead())
+                .published(post.isPublished())
                 .author(post.getAppUser().getNickname())
                 .photoUrl(post.getPhotoUrl())
                 .categoryName(post.getCategory().getName())

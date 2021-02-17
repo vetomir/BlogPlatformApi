@@ -10,7 +10,7 @@ import pl.gregorymartin.newsportal.appUser.AppUser;
 import pl.gregorymartin.newsportal.appUser.AppUserService;
 import pl.gregorymartin.newsportal.category.Category;
 import pl.gregorymartin.newsportal.category.CategoryService;
-import pl.gregorymartin.newsportal.post.dto.PostReadModel;
+import pl.gregorymartin.newsportal.comment.CommentService;
 import pl.gregorymartin.newsportal.tag.Tag;
 import pl.gregorymartin.newsportal.tag.TagService;
 
@@ -43,7 +43,7 @@ class PostService {
 
     public List<Post> getPosts(int page, Sort.Direction sort, String sortBy, int number) {
 
-        return postRepository.findAll(
+        return postRepository.findAllPublished(
                 PageRequest.of(page, number,
                         Sort.by(sort, sortBy)
                 )
@@ -59,6 +59,18 @@ class PostService {
     }
 
     Post addPost(Post source, long categoryId, long userId){
+        AppUser appUser = appUserService.getSingleAppUser(userId);
+        source.setAppUser(appUser);
+
+        Category category = categoryService.getSingleCategory(categoryId);
+        source.setCategory(category);
+
+        source.setTags(tagService.saveTags(source.getTags()));
+
+        return postRepository.save(source);
+    }
+
+    Post editPost(Post source, long categoryId, long userId){
         AppUser appUser = appUserService.getSingleAppUser(userId);
         source.setAppUser(appUser);
 
@@ -145,6 +157,6 @@ class PostService {
 
     void deletePost(long postId){
         Post post = getSinglePost(postId);
-        postRepository.delete(post);
+        postRepository.deleteById(post.getId());
     }
 }

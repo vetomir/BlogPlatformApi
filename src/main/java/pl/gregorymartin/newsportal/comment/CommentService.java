@@ -110,7 +110,7 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    void deleteComment(long commentId){
+    public void deleteComment(long commentId){
         Comment comment = getSingleComment(commentId);
         commentRepository.delete(comment);
     }

@@ -19,6 +19,7 @@ class PostSingle {
     private String title;
     private String lead;
     private String content;
+    private boolean published;
 
     private String photoUrl;
     private String photoSource;

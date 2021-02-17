@@ -23,6 +23,7 @@ public class PostQueryFactory {
                 .id(post.getId())
                 .title(post.getTitle())
                 .lead(post.getLead())
+                .published(post.isPublished())
                 .author(post.getAppUser().getNickname())
                 .photoUrl(post.getPhotoUrl())
                 .createdOn(post.formatCreatedOn())

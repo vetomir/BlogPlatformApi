@@ -66,7 +66,7 @@ class Post extends Audit {
     private Set<Tag> tags = new HashSet<>();
 
     
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "post_id")
     private Set<Comment> comments = new HashSet<>();
 
@@ -80,19 +80,31 @@ class Post extends Audit {
         this.content = content;
     }
 
-    Post(@NotBlank final String title, @NotBlank final String lead, @NotBlank final String content, @NotBlank final String photoUrl) {
+    Post(@NotBlank final String title, @NotBlank final String lead, @NotBlank final String content, @NotBlank final String photoUrl, boolean published) {
         this.title = title;
         this.lead = lead;
         this.content = content;
         this.photoUrl = photoUrl;
+        this.published = published;
     }
 
-    Post(@NotBlank final String title, @NotBlank @Size(min = 50, message = "Lead should have more than 50 symbols") @Size(max = 400, message = "Lead should have less than 400 symbols") final String lead, @NotBlank @Size(min = 400, message = "Content should have more than 400 symbols") @Size(max = 10000, message = "Content should have less than 10000 symbols") final String content, final AppUser appUser, final Category category, final Set<Tag> tags) {
+    Post(@NotBlank final String title, @NotBlank @Size(min = 50, message = "Lead should have more than 50 symbols") @Size(max = 400, message = "Lead should have less than 400 symbols") final String lead, @NotBlank @Size(min = 400, message = "Content should have more than 400 symbols") @Size(max = 10000, message = "Content should have less than 10000 symbols") final String content, final AppUser appUser, final Category category, final Set<Tag> tags, boolean published) {
         this.title = title;
         this.lead = lead;
         this.content = content;
         this.appUser = appUser;
         this.category = category;
         this.tags = tags;
+        this.published = published;
+    }
+
+    void editPost(Post source){
+        this.title = source.title;
+        this.lead = source.lead;
+        this.content = source.content;
+        this.category = source.category;
+        this.tags = source.tags;
+        this.photoUrl = source.photoUrl;
+        this.photoSource = source.photoSource;
     }
 }

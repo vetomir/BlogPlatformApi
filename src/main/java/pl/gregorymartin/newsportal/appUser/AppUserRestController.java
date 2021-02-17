@@ -70,6 +70,7 @@ class AppUserRestController {
         if(!source.getPassword().equals(source.getPasswordRepeat())){
             throw new IllegalArgumentException("passwords are not the same");
         }
+        System.out.println(source);
         AppUser appUser = AppUserEditCredentialsFactory.toEntity(source);
         appUser.setId(userId);
         AppUser result = service.editAppUserCredentials(appUser);

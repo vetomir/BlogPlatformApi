@@ -13,6 +13,7 @@ public
 class PostQueryReadModel {
     private long id;
     private String title;
+    private boolean published;
     private String lead;
     private String photoUrl;
     private String author;

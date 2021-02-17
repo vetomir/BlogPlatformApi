@@ -27,7 +27,6 @@ public class Comment extends Audit {
 
     private long parentCommentId;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;

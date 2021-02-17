@@ -14,6 +14,7 @@ class PostHintQuery {
     private long id;
     private String title;
     private String lead;
+    private boolean published;
     private String photoUrl;
     private String createdOn;
     private AppUserQueryReadModel author;
