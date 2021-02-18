@@ -29,6 +29,10 @@ class PostRestController {
         this.service = service;
     }
 
+    @GetMapping()
+    public String chuj(){
+        return "CHUJ";
+    }
     @GetMapping("/list/{type}")
     public ResponseEntity<List<?>> readAllAndMap(
             @PathVariable(required = false) String type,
