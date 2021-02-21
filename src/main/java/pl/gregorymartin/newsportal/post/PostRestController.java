@@ -29,10 +29,6 @@ class PostRestController {
         this.service = service;
     }
 
-    @GetMapping()
-    public String chuj(){
-        return "CHUJ";
-    }
     @GetMapping("/list/{type}")
     public ResponseEntity<List<?>> readAllAndMap(
             @PathVariable(required = false) String type,
@@ -42,7 +38,7 @@ class PostRestController {
             @RequestParam(required = false) Integer number
             /*@AuthenticationPrincipal UsernamePasswordAuthenticationToken user*/) {
         int pageNumber = page != null && page >= 0 ? page : 0;
-        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
+        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.DESC;
         String sortByVariable = sortBy != null ? sortBy : "id";
         int numberOfPosts = number != null && number >= 0 ? number: 25;
 
@@ -75,7 +71,7 @@ class PostRestController {
             @RequestParam(required = false) Integer number
             /*@AuthenticationPrincipal UsernamePasswordAuthenticationToken user*/) {
         int pageNumber = page != null && page >= 0 ? page : 0;
-        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
+        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.DESC;
         String sortByVariable = sortBy != null ? sortBy : "id";
 
         int numberOfPosts = number != null && number >= 0 ? number: 25;

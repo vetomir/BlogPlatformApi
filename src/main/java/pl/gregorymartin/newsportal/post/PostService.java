@@ -10,7 +10,6 @@ import pl.gregorymartin.newsportal.appUser.AppUser;
 import pl.gregorymartin.newsportal.appUser.AppUserService;
 import pl.gregorymartin.newsportal.category.Category;
 import pl.gregorymartin.newsportal.category.CategoryService;
-import pl.gregorymartin.newsportal.comment.CommentService;
 import pl.gregorymartin.newsportal.tag.Tag;
 import pl.gregorymartin.newsportal.tag.TagService;
 
@@ -131,10 +130,17 @@ class PostService {
 
         List<Post> result = new ArrayList<>();
         for (String q : queryArray) {
-            Page<Post> allByContainedQuery = postRepository.findAllByContainedQuery(q, PageRequest.of(page, items,
+            List<Post> allByQueryInTitle = postRepository.findAllByQueryInTitle(q, PageRequest.of(page, items,
                     Sort.by(sort, sortBy)));
+            result.addAll(allByQueryInTitle);
 
-            result.addAll(allByContainedQuery.getContent());
+            List<Post> allByQueryInLead = postRepository.findAllByQueryInLead(q, PageRequest.of(page, items,
+                    Sort.by(sort, sortBy)));
+            result.addAll(allByQueryInLead);
+
+            List<Post> allByQueryInContent = postRepository.findAllByQueryInContent(q, PageRequest.of(page, items,
+                    Sort.by(sort, sortBy)));
+            result.addAll(allByQueryInContent);
         }
         List<Post> resultDto = result.stream()
                 .distinct()

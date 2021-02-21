@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.gregorymartin.newsportal.appUser.dto.*;
 
+import javax.persistence.Access;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -57,7 +58,7 @@ class AppUserRestController {
     }
 
     @PostMapping
-    public ResponseEntity<AppUserReadModel> create(@RequestBody @Valid AppUserWriteModel source/*, @RequestParam(name = "user-id") long userId*/) {
+    public ResponseEntity<AppUserReadModel> create(@RequestBody AppUserWriteModel source/*, @RequestParam(name = "user-id") long userId*/) {
         if(!source.getPassword().equals(source.getPasswordRepeat())){
             throw new IllegalArgumentException("passwords are not the same");
         }

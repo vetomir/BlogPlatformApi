@@ -4,12 +4,14 @@ package pl.gregorymartin.newsportal.post;
 import pl.gregorymartin.newsportal.appUser.AppUserQueryFactory;
 import pl.gregorymartin.newsportal.category.CategoryQueryFactory;
 import pl.gregorymartin.newsportal.comment.CommentQueryFactory;
+import pl.gregorymartin.newsportal.comment.dto.CommentQueryReadModel;
 import pl.gregorymartin.newsportal.post.dto.PostReadModel;
 import pl.gregorymartin.newsportal.post.dto.PostWriteModel;
 import pl.gregorymartin.newsportal.tag.Tag;
 import pl.gregorymartin.newsportal.tag.TagQueryFactory;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,6 +53,9 @@ public class PostFactory {
     }
 
     public static PostReadModel toDto(Post post) {
+        List<CommentQueryReadModel> comments = CommentQueryFactory.toDto(new ArrayList<>(post.getComments()));
+        comments = comments.stream().sorted(Comparator.comparing(CommentQueryReadModel::getId).reversed()).collect(Collectors.toList());
+
         return PostReadModel.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -63,7 +68,7 @@ public class PostFactory {
                 .published(post.isPublished())
                 .category(CategoryQueryFactory.toDto(post.getCategory()))
                 .tags(TagQueryFactory.toDto(new ArrayList<>( post.getTags() )))
-                .comments(CommentQueryFactory.toDto(new ArrayList<>(post.getComments())))
+                .comments(comments)
                 .build();
     }
 }

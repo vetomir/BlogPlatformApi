@@ -2,6 +2,7 @@ package pl.gregorymartin.newsportal.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,10 +44,14 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/login")
+                .permitAll()
                 .antMatchers("/api/authenticate")
                 .permitAll()
                 .antMatchers("/api/logout")
                 .permitAll()
+                .antMatchers("/h-2console/**").hasAnyRole("ADMIN")
+                .antMatchers("/api/status").permitAll()
 
                 .and()
                 .logout()
@@ -58,9 +63,16 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
+
+                .antMatchers(HttpMethod.POST,"/api/users").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/users/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/users/{nickname}").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/posts/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/categories/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/comments/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/tags/**").permitAll()
                 .anyRequest()
-                //.authenticated()
-                .permitAll()
+                .authenticated()
 
                 .and()
                 .addFilterBefore(new AuthenticationFilter(userDetailsService, tokenService), AnonymousAuthenticationFilter.class)

@@ -22,6 +22,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.Date;
 import java.util.List;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -33,7 +34,9 @@ public class RestExceptionHandler {
     protected ResponseEntity<ErrorDetails> handleValidExceptions(MethodArgumentNotValidException e, HttpServletRequest request) {
         logger.warn("{} , message: '{}'", e.getClass().getSimpleName() , e.getMessage());
 
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), List.of(e.getBindingResult().getFieldError().getDefaultMessage()), request.getRequestURI());
+        List<String> errorMessages = List.of(Objects.requireNonNull(e.getBindingResult().getFieldError().getDefaultMessage()));
+
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), errorMessages, request.getRequestURI());
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
