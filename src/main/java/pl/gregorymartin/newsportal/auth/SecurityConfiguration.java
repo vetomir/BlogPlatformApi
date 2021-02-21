@@ -127,9 +127,8 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://example.com",
-                                "https://www.example.com",
-                                "http://192.168.1.12:3000",
+                        .allowedOrigins(
+                                "https://portfolio-blog-react.vercel.app",
                                 "http://localhost:3000",
                                 "http://localhost:3001");
             }
