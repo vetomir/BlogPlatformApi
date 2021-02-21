@@ -98,28 +98,6 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-   /* @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3001")
-                        .allowedMethods("GET", "PUT", "POST", "PATCH", "DELETE", "OPTIONS");
-            }
-        };
-    }*/
-/*   @Bean
-   public CorsFilter corsFilter() {
-       final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-       final CorsConfiguration config = new CorsConfiguration();
-       config.setAllowCredentials(true);
-       config.setAllowedOrigins(List.of("http://localhost:3001"));
-       config.setAllowedHeaders(List.of("Origin", "Content-Type", "Accept"));
-       config.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
-       source.registerCorsConfiguration("/**", config);
-       return new CorsFilter(source);
-   }*/
     @Bean
     public WebMvcConfigurer corsConfigurer() {
 
@@ -130,7 +108,9 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .allowedOrigins(
                                 "https://my-blog-app-view.vercel.app",
                                 "http://localhost:3000",
-                                "http://localhost:3001");
+                                "http://localhost:3001")
+                        .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH")
+                        .allowedHeaders("Origin", "Content-Type", "Accept", "Authorization");
             }
         };
     }
