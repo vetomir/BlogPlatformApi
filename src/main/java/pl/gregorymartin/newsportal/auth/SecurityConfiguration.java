@@ -47,17 +47,6 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/login")
-                .permitAll()
-                .antMatchers("/api/authenticate")
-                .permitAll()
-                .antMatchers("/api/logout")
-                .permitAll()
-                .antMatchers("/h-2console/**").hasAnyRole("ADMIN")
-                .antMatchers("/api/status").permitAll()
-
-                .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
                 .logoutSuccessUrl("/")
@@ -68,11 +57,16 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
 
+                .antMatchers("/h-2console/**").hasAnyRole("ADMIN")
+                .antMatchers("/api/status").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/authenticate").permitAll()
+                .antMatchers("/api/logout").permitAll()
+
                 .antMatchers(HttpMethod.POST,"/api").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/**").permitAll()
                 .anyRequest()
-                //.authenticated()
-                .permitAll()
+                .authenticated()
+                //.permitAll()
 
 
                 .and()
