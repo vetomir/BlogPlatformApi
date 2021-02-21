@@ -102,13 +102,12 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
+                registry.addMapping("/api/**")
                         .allowedOrigins(
-                                "https://my-blog-app-view.vercel.app",
+                                "https://my-blog-app-view.vercel.app/**",
                                 "http://localhost:3000",
                                 "http://localhost:3001")
-                        .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH")
-                        .allowedHeaders("Origin", "Content-Type", "Accept", "Authorization");
+                        .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH");
             }
         };
     }
