@@ -72,9 +72,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
                 .and()
-                .addFilterBefore(new AuthenticationFilter(userDetailsService, tokenService), AnonymousAuthenticationFilter.class)
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .addFilterBefore(new AuthenticationFilter(userDetailsService, tokenService), AnonymousAuthenticationFilter.class);
     }
 
 
@@ -102,9 +100,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
                         .allowedOrigins(
-                                "https://my-blog-app-view.vercel.app",
-                                "http://localhost:3000",
-                                "http://localhost:3001")
+                                "https://my-blog-app-view.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH");
             }
         };
