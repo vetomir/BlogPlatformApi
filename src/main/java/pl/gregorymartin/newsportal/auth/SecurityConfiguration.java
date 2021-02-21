@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final TokenService tokenService;
     private UserDetailsService userDetailsService;
@@ -59,7 +61,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/h-2console/**").hasAnyRole("ADMIN")
                 .antMatchers("/api/status").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/authenticate").permitAll()
+                .antMatchers("/api/authenticate").permitAll()
                 .antMatchers("/api/logout").permitAll()
 
                 .antMatchers(HttpMethod.GET,"/api/**").permitAll()
