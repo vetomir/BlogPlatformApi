@@ -17,10 +17,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.gregorymartin.newsportal.appUser.AppUserService;
 
+import java.util.List;
 import java.util.Set;
 
 @EnableWebSecurity
@@ -64,15 +68,12 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
 
-                .antMatchers(HttpMethod.POST,"/api/users").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/users/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/users/{nickname}").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/posts/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/categories/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/comments/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/tags/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/api").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/**").permitAll()
                 .anyRequest()
                 .authenticated()
+                //.permitAll()
+
 
                 .and()
                 .addFilterBefore(new AuthenticationFilter(userDetailsService, tokenService), AnonymousAuthenticationFilter.class)
@@ -97,15 +98,42 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean
+   /* @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*")
+                        .allowedOrigins("http://localhost:3001")
                         .allowedMethods("GET", "PUT", "POST", "PATCH", "DELETE", "OPTIONS");
             }
         };
+    }*/
+/*   @Bean
+   public CorsFilter corsFilter() {
+       final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+       final CorsConfiguration config = new CorsConfiguration();
+       config.setAllowCredentials(true);
+       config.setAllowedOrigins(List.of("http://localhost:3001"));
+       config.setAllowedHeaders(List.of("Origin", "Content-Type", "Accept"));
+       config.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
+       source.registerCorsConfiguration("/**", config);
+       return new CorsFilter(source);
+   }*/
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("https://example.com",
+                                "https://www.example.com",
+                                "http://192.168.1.12:3000",
+                                "http://localhost:3000",
+                                "http://localhost:3001");
+            }
+        };
     }
+
 }
