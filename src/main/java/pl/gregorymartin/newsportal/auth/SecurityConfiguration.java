@@ -48,7 +48,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().disable()
+                //.cors().disable()
                 .csrf().disable()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
@@ -94,7 +94,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    /*@Bean
+    @Bean
     public WebMvcConfigurer corsConfigurer() {
 
         return new WebMvcConfigurer() {
@@ -106,6 +106,6 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH");
             }
         };
-    }*/
+    }
 
 }
