@@ -13,8 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-//todo
-@CrossOrigin
 class AppUserRestController {
     private final AppUserService service;
 
@@ -23,8 +21,11 @@ class AppUserRestController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<AppUserReadModel>> readAll(@RequestParam(required = false) Integer page, Sort.Direction sort, String sortBy
-            /*@AuthenticationPrincipal UsernamePasswordAuthenticationToken user*/) {
+    public ResponseEntity<List<AppUserReadModel>> readAll(
+            @RequestParam(required = false) Integer page,
+            Sort.Direction sort,
+            String sortBy
+            ) {
         int pageNumber = page != null && page >= 0 ? page : 0;
         Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
         String sortByVariable = sortBy != null ? sortBy : "id";

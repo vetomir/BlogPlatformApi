@@ -19,12 +19,14 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import pl.gregorymartin.newsportal.appUser.AppUserService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -48,7 +50,6 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //.cors().disable()
                 .csrf().disable()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
@@ -69,13 +70,13 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/api/users/me").permitAll()
                 .antMatchers(HttpMethod.POST,"/api").permitAll()
                 .anyRequest()
-                //.authenticated()
+                .authenticated()
                 /*heroku problems*/
-                .permitAll()
-
-
+                /*.permitAll()*/
                 .and()
-                .addFilterBefore(new AuthenticationFilter(userDetailsService, tokenService), AnonymousAuthenticationFilter.class);
+                .addFilterBefore(new AuthenticationFilter(userDetailsService, tokenService), AnonymousAuthenticationFilter.class)
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
 
@@ -95,6 +96,23 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+/*    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new
+                UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("https://my-blog-app-view.vercel.app");
+        config.addAllowedOrigin("http://localhost:3001");
+        config.addAllowedHeader("Authentication");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("PATCH");
+        config.addAllowedMethod("DELETE");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }*/
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
 
@@ -103,7 +121,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
                         .allowedOrigins(
-                                "https://my-blog-app-view.vercel.app")
+                                "https://my-blog-app-view-40hu9q5lw-vetomir.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH");
             }
         };
