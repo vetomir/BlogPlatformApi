@@ -70,9 +70,9 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/api/users/me").permitAll()
                 .antMatchers(HttpMethod.POST,"/api").permitAll()
                 .anyRequest()
-                //.authenticated()
+                .authenticated()
                 /*heroku problems*/
-                .permitAll()
+                /*.permitAll()*/
                 .and()
                 .addFilterBefore(new AuthenticationFilter(userDetailsService, tokenService), AnonymousAuthenticationFilter.class)
                 .sessionManagement()
