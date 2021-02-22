@@ -121,7 +121,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
                         .allowedOrigins(
-                                "https://my-blog-app-view-40hu9q5lw-vetomir.vercel.app")
+                                "https://portfolio-blog-react.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH");
             }
         };
