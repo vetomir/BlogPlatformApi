@@ -113,7 +113,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
                         .allowedOrigins(
-                                /*"http://localhost:3001",*/
+                                "http://localhost:3001",
                                 "https://my-blog-app-view.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH");
             }

@@ -13,6 +13,7 @@ import pl.gregorymartin.newsportal.auth.dto.AuthenticationResponse;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/authenticate")
 class AuthenticationController {
     private final AuthenticationManager authenticationManager;
