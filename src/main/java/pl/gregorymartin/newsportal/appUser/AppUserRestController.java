@@ -13,6 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+//todo
+@CrossOrigin
 class AppUserRestController {
     private final AppUserService service;
 
