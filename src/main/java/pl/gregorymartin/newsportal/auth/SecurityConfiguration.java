@@ -42,7 +42,7 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .cors().and().csrf().disable()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
                 .logoutSuccessUrl("/")
@@ -62,9 +62,9 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/api/users/").permitAll()
                 .antMatchers(HttpMethod.POST,"/api").permitAll()
                 .anyRequest()
-                /*.authenticated()*/
+                .authenticated()
                 /*heroku problems*/
-                .permitAll()
+                /*.permitAll()*/
                 .and()
                 .addFilterBefore(new AuthenticationFilter(userDetailsService, tokenService), AnonymousAuthenticationFilter.class)
                 .sessionManagement()
@@ -115,7 +115,8 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .allowedOrigins(
                                 /*"http://localhost:3001",*/
                                 "https://my-blog-app-view.vercel.app")
-                        .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH");
+                        .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH")
+                        .allowCredentials(true);
             }
         };
     }
