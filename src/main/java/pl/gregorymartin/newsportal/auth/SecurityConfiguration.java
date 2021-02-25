@@ -63,8 +63,6 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/api").permitAll()
                 .anyRequest()
                 .authenticated()
-                /*heroku problems*/
-                /*.permitAll()*/
                 .and()
                 .addFilterBefore(new AuthenticationFilter(userDetailsService, tokenService), AnonymousAuthenticationFilter.class)
                 .sessionManagement()
@@ -87,23 +85,6 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-/*    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new
-                UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("https://my-blog-app-view.vercel.app");
-        config.addAllowedOrigin("http://localhost:3001");
-        config.addAllowedHeader("Authentication");
-        config.addAllowedMethod("GET");
-        config.addAllowedMethod("POST");
-        config.addAllowedMethod("PATCH");
-        config.addAllowedMethod("DELETE");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }*/
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {

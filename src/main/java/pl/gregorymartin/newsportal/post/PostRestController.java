@@ -109,8 +109,8 @@ class PostRestController {
         return ResponseEntity.created(URI.create("/" + result.getId())).body(PostFactory.toDto(result));
     }
 
-    @PatchMapping("/{id}/category")
-    public ResponseEntity<PostReadModel> updateCategory(@PathVariable(name = "id") long postId, @RequestParam(name = "id") long categoryId) {
+    @PatchMapping("/{id}/category/{categoryId}")
+    public ResponseEntity<PostReadModel> updateCategory(@PathVariable(name = "id") long postId, @PathVariable(name = "categoryId") long categoryId) {
         Post result = service.editCategory(postId, categoryId);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(PostFactory.toDto(result));
     }
